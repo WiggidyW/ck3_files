@@ -1,0 +1,127 @@
+types ProgressBars
+{
+    type progressbar_standard = progressbar {
+        min = 0
+        max = 100
+        value = 35
+        size = { 50 20 }
+
+        progresstexture = "gfx/interface/tiles/tile_progress_standard.dds"
+        noprogresstexture = "gfx/interface/tiles/tile_progress_red.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 6 6 }
+
+        icon = {
+            name = "overlay"
+            texture = "gfx/interface/tiles/tile_progress_overlay.dds"
+            spriteType = Corneredstretched
+            spriteborder = { 2 2 }
+            size = { 100% 100% }
+        }
+    }
+
+    type progressbar_standard_transparent = progressbar {
+        min = 0
+        max = 100
+        value = 35
+        size = { 50 20}
+
+        progresstexture = "gfx/interface/tiles/tile_progress_standard_transparent.dds"
+        noprogresstexture = "gfx/interface/tiles/tile_progress_red_transparent.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 6 6 }
+
+        icon = {
+            name = "overlay"
+            texture = "gfx/interface/tiles/tile_progress_overlay.dds"
+            spriteType = Corneredstretched
+            spriteborder = { 2 2 }
+            size = { 100% 100% }
+        }
+    }
+
+    type progressbar_red = progressbar {
+        min = 0
+        max = 100
+        value = 35
+        size = { 50 20}
+
+        progresstexture = "gfx/interface/tiles/tile_progress_red.dds"
+        noprogresstexture = "gfx/interface/tiles/tile_progress_black.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 6 6 }
+
+        icon = {
+            name = "overlay"
+            texture = "gfx/interface/tiles/tile_progress_overlay.dds"
+            spriteType = Corneredstretched
+            spriteborder = { 2 2 }
+            size = { 100% 100% }
+        }
+    }
+
+    type progressbar_frozen = progressbar {
+        min = 0
+        max = 100
+        value = 35
+        size = { 50 20}
+
+        progresstexture = "gfx/interface/tiles/tile_progress_frozen.dds"
+        noprogresstexture = "gfx/interface/tiles/tile_progress_black.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 6 6 }
+
+        icon = {
+            name = "overlay"
+            texture = "gfx/interface/tiles/tile_progress_overlay.dds"
+            spriteType = Corneredstretched
+            spriteborder = { 2 2 }
+            size = { 100% 100% }
+        }
+    }
+
+    type progressbar_frozen_transparent = progressbar {
+        min = 0
+        max = 100
+        value = 35
+        size = { 50 20}
+
+        progresstexture = "gfx/interface/tiles/tile_progress_frozen.dds"
+        noprogresstexture = "gfx/interface/tiles/tile_progress_black.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 6 6 }
+
+        icon = {
+            name = "overlay"
+            texture = "gfx/interface/tiles/tile_progress_overlay.dds"
+            spriteType = Corneredstretched
+            spriteborder = { 2 2 }
+            size = { 100% 100% }
+        }
+    }
+
+    type progressbar_green = progressbar {
+        min = 0
+        max = 100
+        value = 35
+        size = { 50 20 }
+
+        progresstexture = "gfx/interface/tiles/tile_progress_green.dds"
+        noprogresstexture = "gfx/interface/tiles/tile_progress_black.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 6 6 }
+
+        icon = {
+            name = "overlay"
+            texture = "gfx/interface/tiles/tile_progress_overlay.dds"
+            spriteType = Corneredstretched
+            spriteborder = { 2 2 }
+            size = { 100% 100% }
+        }
+    }
+
+    type progress_threshold = icon {
+        alwaystransparent = yes
+        texture = "gfx/interface/faction_view/faction_progress_threshold.dds"
+    }
+}

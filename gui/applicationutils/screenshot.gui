@@ -1,0 +1,18 @@
+vbox = {
+	name = "screenshotutils_window"
+	layer = confirmation
+
+	widget = {
+		layoutpolicy_horizontal = Expanding
+		layoutpolicy_vertical = Expanding
+		layoutstretchfactor_vertical = 20
+		
+		text_label_center = {
+		    name = "screenshot_text"
+		    text = "SCREENSHOT_TAKEN"
+		    parentanchor = center|hcenter
+			position = { 0 -20 }    
+		}
+
+	}
+}

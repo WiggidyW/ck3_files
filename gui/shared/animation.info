@@ -1,0 +1,8 @@
+## Animations triggered by code
+
+character_window_refresh - global - is triggered when a new character is set on the character window while open
+
+on_player_election_nomination - global - is triggered when the player nominates a candidate for a title election
+
+map_zoom_[0-15] - triggered when hitting zoom steps on map, interrups other zoom step animations
+

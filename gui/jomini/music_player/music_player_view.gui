@@ -1,0 +1,242 @@
+window = {
+	name = "JominiMusicPlayerView"
+	size = { 500 500 }
+	visible = no
+	parentanchor = center|hcenter
+	layer = windows_layer
+
+	background = {
+		using = "JominiBackground"
+	}
+	
+	hbox = {
+		margin = { 10 10 }
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			
+			widget = {
+				name = "playback_controller"
+				size = { 0 75 }
+				layoutpolicy_horizontal = expanding
+				scissor = yes
+				
+				background = {
+					using = "JominiBackground"
+				}
+				
+				widget = {
+					position = { 0 15 }
+					size = { 100% 20 }
+					hbox = {
+						widget = {
+							size = { 100 20 }
+						}
+
+						text_single = {
+							name = "track_name"
+							size = { 0 20 }
+							layoutpolicy_horizontal = expanding
+							text = "[MusicPlayback.GetCurrentTrackName]"
+							align = center|nobaseline
+						}
+						
+						text_single = {
+							name = "elapsed_time"
+							layoutpolicy_horizontal = preferred
+							size = { 100 20 }
+							text = "[MusicPlayback.GetCurrentTrackElapsedTime]/[MusicPlayback.GetCurrentTrackDurationTime]"
+							align = center|nobaseline
+						}
+					}
+				}
+
+				button = {
+					using = "JominiButton"
+					name = "prev_track_button"
+					size = { 30 30 }
+					position = { -50 0 }
+					parentanchor = bottom|hcenter
+					text = "<<"
+					tooltip = "MUSIC_PLAYER_PREV_TRACK"
+					onclick = "[MusicPlayback.PreviousTrack]"
+					
+				}
+				
+				button = {
+					using = "JominiButton"
+					name = "toggle_play_pause_button"
+					size = { 30 30 }
+					position = { 0 0 }
+					parentanchor = bottom|hcenter
+					text = "[MusicPlayback.GetPlaybackStatusFrameIndex]"
+					tooltip = "MUSIC_PLAYER_PLAY_PAUSE"
+					onclick = "[MusicPlayback.TogglePlayPauseTrack]"
+					
+				}
+			
+				button = {
+					using = "JominiButton"
+					name = "next_track_button"
+					size = { 30 30 }
+					position = { 50 0 }
+					parentanchor = bottom|hcenter
+					text = ">>"
+					tooltip = "MUSIC_PLAYER_NEXT_TRACK"
+					onclick = "[MusicPlayback.NextTrack]"
+					
+				}
+
+				button = {
+					using = "JominiButton"
+					name = "change_shuffle_method_button"
+					size = { 30 30 }
+					position = { 150 0 }
+					parentanchor = bottom|hcenter
+					text = "[MusicPlayback.GetShuffleMethodFrameIndex]"
+					tooltip = "MUSIC_PLAYER_CHANGE_SHUFFLE_METHOD"
+					onclick = "[MusicPlayback.ChangeShuffleMethod]"
+					
+				}
+			}
+
+			widget = {
+				name = "playlist"
+
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				
+				background = {
+					using = "JominiBackground"
+				}
+				
+				scrollarea = {
+					name = "tracks"
+					scrollbarpolicy_horizontal = always_off
+					scrollbarpolicy_vertical = as_needed
+					scrollbaralign_vertical = right
+					autoresizeviewport = yes
+					size = { 100% 100% }
+
+					scrollbar_vertical = {
+						using = "JominiVerticalScrollbar"
+					}
+
+					viewportwidget = {
+						widget = {
+							scissor = yes
+						}
+					}
+
+					scrollwidget = {
+						fixedgridbox = {
+							name = "tracks_grid"
+							maxhorizontalslots = 1
+							addcolumn = 100%
+							addrow = 25
+							setitemsizefromcell = yes
+							item = {
+								widget = {
+									name = "track_item"					
+									background = {
+										using = "JominiBackground"
+									}
+
+									hbox = {
+										widget = {
+											size = { 100 25 }
+											layoutpolicy_horizontal = preferred
+
+											button = {
+												using = "JominiButton"
+												name = "play_button"
+												size = { 25 25 }
+												text = ">"
+												onclick = "[MusicTrack.Play]"
+												visible = "[MusicTrack.CanBePlayed]"
+												tooltip = "MUSIC_PLAYER_TRACK_PLAY"
+											}
+
+											widget = {
+												position = { 25 0 }
+												size = { 25 25 }
+
+												button = {
+													using = "JominiButton"
+													name = "disable_button"
+													size = { 100% 100% }
+													text = "D"
+													onclick = "[MusicTrack.Disable]"
+													visible = "[MusicTrack.CanBeDisabled]"
+													tooltip = "MUSIC_PLAYER_TRACK_DISABLE"
+												}
+
+												button = {
+													using = "JominiButton"
+													name = "enable_button"
+													size = { 100% 100% }
+													text = "E"
+													onclick = "[MusicTrack.Enable]"
+													visible = "[MusicTrack.CanBeEnabled]"
+													tooltip = "MUSIC_PLAYER_TRACK_ENABLE"
+												}
+
+												button = {
+													using = "JominiButton"
+													name = "remove_button"
+													size = { 100% 100% }
+													text = "R"
+													onclick = "[MusicTrack.Remove]"
+													visible = "[Not(MusicTrack.IsValid)]"
+													tooltip = "MUSIC_PLAYER_TRACK_REMOVE"
+												}
+											}
+										}
+
+										text_single = {
+											name = "current"
+											size = { 10 25 }
+											layoutpolicy_horizontal = preferred
+											align = left|nobaseline
+											text = "*"
+											visible = "[MusicTrack.IsPlaying]"
+										}
+
+										text_single = {
+											name = "track_name"
+											size = { 0 25 }
+											layoutpolicy_horizontal = expanding
+											align = left|nobaseline
+											text = "[MusicTrack.GetName]"
+											elide = right
+										}
+
+										text_single = {
+											name = "track_duration"
+											size = { 60 25 }
+											layoutpolicy_horizontal = preferred
+											align = left|nobaseline
+											text = "[MusicTrack.GetDuration]"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	button = {
+		name = "close_button"
+		position = { -4 5 }
+		size = { 20 23 }
+		parentanchor = top|right
+		text = "x"
+		align = center|nobaseline
+		onclick = "[OnToggleMusicPlayer]"
+		shortcut = "close_window"
+		
+	}
+}

@@ -1,0 +1,153 @@
+window = {
+	gfxtype = windowgfx
+	name = "save_game_window"
+	parentanchor = center
+	alwaystransparent = no
+	movable = no
+	resizable = no
+	layer = confirmation
+	size = { 100% 100% }
+
+	button = {
+		size = { 100% 100% }
+		onclick = "[SaveGameWindow.Cancel]"
+	}
+
+	# using = Background_Fade
+
+	widget = {
+		size = { 490 760 }
+		parentanchor = center
+		alwaystransparent = no
+
+		using = Window_Background
+		using = Window_Decoration_Spike
+
+		vbox = {
+			using = Window_Margins
+			spacing = 5
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text"
+				{
+					text = "SAVE_GAME"
+				}
+
+				blockoverride "button_close" {
+					onclick = "[SaveGameWindow.Cancel]"
+				}
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 15 10 }
+
+				editbox = {
+					name = "save_name"
+					text = "[SaveGameWindow.GetDefaultSaveName]"
+					margin_left = 5
+					size = { 280 36 }
+					using = Font_Type_Standard
+					using = Font_Size_Small
+					default_format = "#high"
+					alwaystransparent = no
+					focuspolicy = all
+					ontextedited = "[SaveGameWindow.UpdateSaveName]"
+					onreturnpressed = "[SaveGameWindow.Save]"
+
+					background =  {
+						using = Background_Area_Border
+					}
+				}
+
+				text_single = {
+					text = "FILE_NAME_INVALID"
+					alwaystransparent = yes
+					visible = "[Not(SaveGameWindow.IsSaveNameOk)]"
+				}
+
+
+				hbox = {
+					name = "cloud_save_area"
+
+					cloud_save_checkbutton = {
+						datacontext = "[SaveGameWindow.AccessCloudData]"
+					}
+
+					icon = {
+						name = "cloud_save_icon"
+						size = { 40 40 }
+						texture = "gfx/interface/frontend/cloud_save.dds"
+					}
+				}
+			}
+
+			scrollbox = {
+				layoutpolicy_horizontal = growing
+				layoutpolicy_vertical = expanding
+
+				blockoverride "scrollbox_content"
+				{
+					vbox = {
+						datamodel = "[SaveGameWindow.GetSaveGames]"
+						spacing = 3
+
+						item = {
+							button_saved_games = {
+								size = { 390 90 }
+								visible = "[Or( SaveGameItem.IsValid, SaveGameWindow.IsShowInvalid )]"
+							}
+						}
+					}
+				}
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 15 5 }
+				spacing = 10
+
+				hbox = {
+					spacing = 2
+	
+					button_checkbox = {
+						checked = "[SaveGameWindow.IsShowInvalid]"
+						onclick = "[SaveGameWindow.ToggleShowInvalid]"
+					}
+	
+					text_single = {
+						text = "SAVE_WINDOW_SHOW_INVALID"
+					}
+				}
+	
+				hbox = {
+					spacing = 5
+					margin = { 0 5 }
+	
+					button_standard = {
+						name = "cancel_button"
+						text = "CANCEL"
+						onclick = "[SaveGameWindow.Cancel]"
+						enabled = "[Not(SaveGameWindow.IsSaving)]"
+						shortcut = "close_window"
+					}
+	
+					button_primary = {
+						name = "save_button"
+						text = "SAVE_WINDOW_SAVE"
+						onclick = "[SaveGameWindow.Save]"
+						enabled = "[And(SaveGameWindow.IsSaveNameOk, Not(SaveGameWindow.IsSaving))]"
+					}
+				}
+			}
+		}
+	}
+
+	save_in_progress_widget = {
+		blockoverride "visibility" {
+			visible = "[SaveGameWindow.IsSaving]"
+		}
+	}
+}

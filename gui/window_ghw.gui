@@ -1,0 +1,939 @@
+window= {
+	name = "great_holy_war_window"
+	parentanchor = center
+	datacontext = "[GreatHolyWarWindow.GetGreatHolyWar]"
+	datacontext = "[GetVariableSystem]"
+	size = { 680 855}
+	layer = windows_layer
+
+
+	using = Window_Background
+	using = GHW_Decoration
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+
+		on_start = "[GetVariableSystem.Set( 'ghw_view', 'main_view' )]"
+		on_start = "[GetVariableSystem.Set( 'ghw_tab', 'attackers' )]"
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+	}
+
+	vbox = {
+		using = Window_Margins
+		layoutpolicy_horizontal = expanding
+		max_width = 680
+		#set_parent_size_to_minimum = yes
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "header_text"
+			{
+				text = "GREAT_HOLY_WAR_WINDOW_TITLE"
+
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[GreatHolyWarWindow.Close]"
+
+			}
+		}
+
+		vbox = {
+			name = "main_content"
+			visible = "[GetVariableSystem.HasValue( 'ghw_view', 'main_view' )]"
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			margin = { 10 10 }
+
+			vbox = {
+				name = "attacker_and_target"
+				layoutpolicy_horizontal = expanding
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					minimumsize = { 0 30 }
+
+					background = {
+						texture = "gfx/interface/tiles/tile_title_bg_01.dds"
+						alpha = 0.7
+					}
+
+					text_single = {
+						name = "ghw_concept"
+						text = "GHW_CONCEPT"
+					}
+
+				}
+
+				hbox = {
+
+					vbox = {
+						spacing = 10
+
+						text_single = {
+							name = "designated_winner_label"
+							visible = "[Not( GreatHolyWar.IsDirectedGhw )]"
+
+							text = "[head_of_faith|E]"
+						}
+
+						portrait_torso = {
+							name = "designated_winner_portrait"
+							datacontext = "[GreatHolyWar.GetFaith.GetReligiousHead]"
+							visible = "[Not( GreatHolyWar.IsDirectedGhw )]"
+
+							background = {
+								using = Background_Area_Dark
+							}
+
+							blockoverride "opinion_box" {}
+
+						}
+
+					}
+					vbox = {
+						layoutpolicy_vertical = expanding
+						hbox = {
+							name = "versus"
+							layoutpolicy_horizontal = expanding
+							spacing = 5
+
+							button_religion_icon = {
+								datacontext = "[GreatHolyWar.GetFaith]"
+							}
+
+							coa_title_medium_crown = {
+								name = "target_title"
+								datacontext = "[GreatHolyWar.GetTargetTitle]"
+							}
+
+							button_religion_icon = {
+								datacontext = "[GreatHolyWar.GetTargetCharacter.GetFaith]"
+							}
+						}
+							button_standard = {
+								name = "see_participants"
+								onclick = "[GetVariableSystem.Set( 'ghw_view', 'tab_view' )]"
+								text = "GHW_SEE_PARTICIPANTS"
+								default_format = "#clickable"
+							}
+						}
+
+					vbox = {
+						spacing = 10
+
+						text_single = {
+							name = "target_character_label"
+
+							text = "GHW_TARGET_CHARACTER"
+						}
+
+						portrait_torso = {
+							name = "target_character_portrait"
+							datacontext = "[GreatHolyWar.GetTargetCharacter]"
+
+							background = {
+								using = Background_Area_Dark
+							}
+
+							blockoverride "opinion_box" {}
+						}
+
+					}
+
+				}
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					text_single = {
+						name = "launch_date_text"
+						visible = "[Not( GreatHolyWar.HasWarStarted )]"
+						text = "GHW_TIME_TO_LAUNCH_IN_WINDOW"
+					}
+				}
+
+			}
+
+			vbox = {
+				name = "center_area"
+				layoutpolicy_horizontal = expanding
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					margin_top = 5
+					spacing = 5
+					name = "pre_war_relative_strength"
+					visible = "[Not(GreatHolyWar.HasWarStarted)]"
+
+					text_single = {
+						name = "relative_military_strength"
+						text = "GHW_RELATIVE_STRENGTH"
+					}
+
+					background = {
+						using = Background_Area
+					}
+
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						margin = { 10 10 }
+						spacing = 10
+
+						tooltip = "GHW_TT_ATTACKERS_VS_DEFENDERS"
+
+						hbox = {
+							layoutpolicy_horizontal = expanding
+
+							hbox = {
+								spacing = 5
+
+								icon = {
+									texture = "gfx/interface/icons/icon_soldier.dds"
+									size = { 25 25 }
+								}
+
+								text_single = {
+									name = "attackers_label"
+									text = "[GreatHolyWar.GetAttackerStrength]"
+								}
+							}
+
+							container = {
+								progressbar_standard = {
+									name = "relative_strength_progressbar"
+									size = { 350 25 }
+									value = "[FixedPointToFloat( GreatHolyWar.GetStrengthProgress )]"
+									parentanchor = center
+									min = 0
+									max = 1
+									direction = horizontal
+								}
+							}
+
+							hbox = {
+								spacing = 5
+								text_single = {
+									name = "defenders_label"
+									text = "[GreatHolyWar.GetDefenderStrength]"
+								}
+								icon = {
+									texture = "gfx/interface/icons/icon_soldier.dds"
+									size = { 25 25 }
+								}
+							}
+						}	
+					}
+				}
+
+				vbox = {
+					name = "during_war"
+					layoutpolicy_horizontal = expanding
+					visible = "[GreatHolyWar.HasWarStarted]"
+
+					margin_bottom = 10
+					spacing = 5
+
+					background = {
+						using = Background_Area
+					}
+
+					hbox = {
+						name = "heading"
+						layoutpolicy_horizontal = expanding
+						minimumsize = { 0 30 }
+
+						background = {
+							texture = "gfx/interface/tiles/tile_title_bg_01.dds"
+							alpha = 0.7
+						}
+
+						text_single = {
+							text = "GHW_MY_CONTRIBUTION"
+						}
+
+					}
+
+					hbox = {
+						name = "values"
+						layoutpolicy_horizontal = expanding
+						ignoreinvisible = yes
+
+						spacing = 5
+
+						vbox = {
+							name = "score"
+							layoutpolicy_horizontal = expanding
+
+
+
+							tooltip = "GHW_MY_SCORE_TT"
+
+							text_single = {
+								text = "GHW_SCORE"
+							}
+
+							text_single = {
+								name = "score"
+								text = "[GreatHolyWarWindow.GetScore( GetPlayer ).GetScore|0V]"
+							}
+
+						}
+
+						vbox = {
+							name = "rank"
+							layoutpolicy_horizontal = expanding
+
+							visible = "[Not(GreatHolyWar.IsDirectedGhw)]"
+
+							tooltip = "GHW_MY_RANK_TT"
+
+							text_single = {
+								text = "GHW_MY_RANK"
+								visible = "[GreatHolyWar.HasWarStarted]"
+							}
+
+							text_single = {
+								text = "[GreatHolyWarWindow.GetRankForCharacter( GetPlayer )]"
+								# animation_attention_text = {
+								# 	size = { 100 30 }
+								# 	visible = "[EqualTo_int32( GreatHolyWar.CalculateContributionRank( GetPlayer ), '(int32)0' )]"
+								# }
+							}
+						}
+
+						vbox = {
+							name = "share"
+							layoutpolicy_horizontal = expanding
+
+
+							tooltip = "GHW_MY_SHARE_TT"
+
+							text_single = {
+								text = "GHW_WARCHEST_SHARE"
+							}
+
+							text_single = {
+								text = "GHW_MAX_WARCHEST"
+								visible = "[GreatHolyWarWindow.IsCharacterMaxScoreReached( GetPlayer )]"
+							}
+
+							text_single = {
+								name = "my_percentage"
+								text = "[GreatHolyWarWindow.GetScore( GetPlayer ).GetScorePercent|0V/%]"
+							}
+						}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+
+						visible = "[GreatHolyWar.HasWarStarted]"
+						spacing = 8
+						tooltip = "[GreatHolyWarWindow.GetPlayerScoreTooltip]"
+					}
+				}
+			}
+
+			vbox = {
+				name = "info_and_war_chest"
+				layoutpolicy_horizontal = expanding
+
+				vbox = {
+					name = "pledge_info"
+					layoutpolicy_horizontal = expanding
+					margin = { 10 10 }
+					spacing = 5
+
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+
+						text_multi = {
+							name = "not_pledged_attacker"
+							datacontext = "[GetScriptedGui( 'can_pledge_as_attacker' )]"
+							visible = "[ScriptedGui.IsShown( GreatHolyWarWindow.GetScope )]"
+							min_width = 500
+							max_width = 500
+							autoresize = yes
+
+							text = "GHW_NOT_ATTACKER_PLEDGED"
+						}
+
+
+						text_multi = {
+							name = "not_pledged_defender"
+							datacontext = "[GetScriptedGui( 'can_pledge_as_defender' )]"
+							visible = "[ScriptedGui.IsShown( GreatHolyWarWindow.GetScope )]"
+							min_width = 500
+							max_width = 500
+							autoresize = yes
+
+							text = "GHW_NOT_DEFENDER_PLEDGED"
+						}
+
+						text_multi = {
+							name = "pledged_defender"
+							visible = "[GreatHolyWar.IsPledgedDefender( GetPlayer )]"
+							min_width = 500
+							max_width = 500
+							autoresize = yes
+
+
+							text = "GHW_PLEDGED"
+						}
+
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						visible = "[GreatHolyWar.IsPledgedAttacker( GetPlayer )]"
+						minimumsize = { 0 30 }
+
+						background = {
+							texture = "gfx/interface/tiles/tile_title_bg_01.dds"
+							alpha = 0.7
+						}
+
+						text_single = {
+							text = "GHW_MY_BENEFICIARY"
+						}
+					}
+
+
+					hbox = {
+						name = "pledged_attacker"
+						layoutpolicy_horizontal = expanding
+						visible = "[GreatHolyWar.IsPledgedAttacker( GetPlayer )]"
+						spacing = 5
+
+						background = {
+							using = Background_Area
+
+							modify_texture = {
+								name = "mask"
+								texture = "gfx/interface/tiles/bg_corner_fade.dds"
+								spriteType = Corneredstretched
+								blend_mode = alphamultiply
+							}
+						}
+
+
+						portrait_torso = {
+							name = "beneficiary_portrait"
+							datacontext = "[GetPlayer.GetBeneficiary]"
+
+							blockoverride "opinion_box" {}
+							blockoverride "status_icons" {}
+							blockoverride "onclick" {
+
+								enabled = "[GreatHolyWarWindow.HasPotentialBeneficiary]"
+								onclick = "[OpenCharacterInteraction( 'select_ghw_beneficiary_interaction', GetPlayer )]"
+								tooltip = "SELECT_GHW_BENEFICIARY"
+
+							}
+
+							button_icon = {
+								parentanchor = center
+								alwaystransparent = yes
+								visible = "[Not(Character.IsValid)]"
+								size = { 40 40 }
+								position = { 0 10 }
+								texture = "gfx/interface/buttons/button_icons/plus.dds"
+							}
+						}
+
+						vbox = {
+							spacing = 10
+							layoutpolicy_horizontal = expanding
+
+							text_multi = {
+								layoutpolicy_horizontal = expanding
+								visible = "[GetPlayer.GetBeneficiary.IsValid]"
+								text = "[GetPlayer.GetBeneficiary.GetFullName]"
+								max_width = 290
+								align = left
+								autoresize = yes
+							}
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								spacing = 5
+								visible = "[GetPlayer.GetBeneficiary.IsValid]"
+
+								button_checkbox = {
+									# frame = "[Select_int32( GreatHolyWar.IsOverridingDesignatedWinner( GetPlayer ), '(int32)1', '(int32)2' )]"
+									datacontext = "[GetScriptedGui( 'toggle_great_holy_war_beneficiary_stance' )]"
+									onclick = "[ScriptedGui.Execute( GreatHolyWarWindow.GetScope )]"
+									tooltip = "[GreatHolyWarWindow.GetOverrideCandidateTooltip(ScriptedGui.Self, GreatHolyWarWindow.GetScope)]"
+									enabled = "[ScriptedGui.IsValid( GreatHolyWarWindow.GetScope )]"
+								}
+
+								text_multi = {
+									layoutpolicy_horizontal = expanding
+									text = "GHW_TOGGLE_BENEFICIARY"
+									max_width = 260
+									autoresize = yes
+								}
+
+								expand = {}
+							}
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+
+								button_standard = {
+									name = "change_beneficiary"
+									size = { 150 30 }
+									enabled = "[GreatHolyWarWindow.HasPotentialBeneficiary]"
+									onclick = "[OpenCharacterInteraction( 'select_ghw_beneficiary_interaction', GetPlayer )]"
+									tooltip = "SELECT_GHW_BENEFICIARY"
+									text = "GHW_CHANGE_BENEFICIARY"
+								}
+
+								expand = {}
+							}
+						}
+
+						vbox = {
+							name = "war_chest"
+							layoutpolicy_horizontal = expanding
+							max_width = 100
+
+							background = {
+								using = Background_Area
+							}
+
+							vbox = {
+								visible = "[Not( GreatHolyWar.IsDirectedGhw )]"
+								layoutpolicy_horizontal = expanding
+								margin = { 10 10 }
+
+								spacing = 15
+
+								hbox = {
+
+									text_single = {
+										name = "war_chest_label"
+										autoresize = yes
+
+										text = "GHW_WAR_CHEST_LABEL"
+									}
+								}
+
+								hbox = {
+									datacontext = "[GreatHolyWarWindow]"
+									datacontext = "[GreatHolyWar]"
+									tooltip = "GHW_WAR_CHEST_PIETY_TOOLTIP"
+
+									text_single = {
+										name = "war_chest_piety"
+										text = "@piety_icon! [GreatHolyWar.GetWarChestPiety|0V]"
+									}
+
+									text_single = {
+										name = "war_chest_piety_player"
+										visible = "[And( GreatHolyWar.HasWarStarted, Or( GreatHolyWar.IsPledgedAttacker( GetPlayer ), GreatHolyWar.IsPledgedDefender( GetPlayer ) ) )]"
+										text = " ([GreatHolyWarWindow.GetPietyForCharacter( GetPlayer )|V])"
+									}
+								}
+
+								hbox = {
+									datacontext = "[GreatHolyWarWindow]"
+									datacontext = "[GreatHolyWar]"
+									tooltip = "GHW_WAR_CHEST_PRESTIGE_TOOLTIP"
+
+									text_single = {
+										name = "war_chest_prestige"
+										text = "@prestige_icon! [GreatHolyWar.GetWarChestPrestige|0V]"
+									}
+
+									text_single = {
+										name = "war_chest_prestige_player"
+										visible = "[And( GreatHolyWar.HasWarStarted, Or( GreatHolyWar.IsPledgedAttacker( GetPlayer ), GreatHolyWar.IsPledgedDefender( GetPlayer ) ) )]"
+										text = " ([GreatHolyWarWindow.GetPrestigeForCharacter( GetPlayer )|V])"
+									}
+								}
+
+								hbox = {
+									datacontext = "[GreatHolyWarWindow]"
+									datacontext = "[GreatHolyWar]"
+									tooltip = "GHW_WAR_CHEST_GOLD_TOOLTIP"
+
+									text_single = {
+										name = "war_chest_gold"
+										text = "@gold_icon! [GreatHolyWar.GetWarChestGold|0V]"
+									}
+
+									text_single = {
+										name = "war_chest_gold_player"
+										visible = "[And( GreatHolyWar.HasWarStarted, Or( GreatHolyWar.IsPledgedAttacker( GetPlayer ), GreatHolyWar.IsPledgedDefender( GetPlayer ) ) )]"
+										text = " ([GreatHolyWarWindow.GetGoldForCharacter( GetPlayer )|V])"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			expand = {}
+
+			vbox = {
+				name = "actions"
+				layoutpolicy_horizontal = expanding
+				margin = { 10 10 }
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 5
+
+					hbox = {
+						name = "buttons"
+						spacing = 10
+
+						button_standard = {
+							name = "toggle_pledge"
+							size = { 200 30 }
+							datacontext = "[GetScriptedGui( 'toggle_great_holy_war_pledge' )]"
+							enabled = "[ScriptedGui.IsValid( GreatHolyWarWindow.GetScope )]"
+							tooltip = "[GreatHolyWarWindow.GetPledgeTooltip(ScriptedGui.Self, GreatHolyWarWindow.GetScope)]"
+							onclick = "[GreatHolyWarWindow.PledgeToGreatHolyWar( ScriptedGui.Self, GreatHolyWarWindow.GetScope )]"
+							visible = "[ScriptedGui.IsShown( GreatHolyWarWindow.GetScope )]"
+							text = "[SelectLocalization(GreatHolyWar.IsPledgedAttacker( GetPlayer ), 'GHW_WITHDRAW', 'GHW_PLEDGE')]"
+						}
+
+						button_standard = {
+							name = "directed_pledge"
+							size = { 200 30 }
+							datacontext = "[GetScriptedGui( 'join_great_holy_war_directed' )]"
+							enabled = "[ScriptedGui.IsValid( GreatHolyWarWindow.GetScope )]"
+							tooltip = "[GreatHolyWarWindow.GetPledgeTooltip(ScriptedGui.Self, GreatHolyWarWindow.GetScope)]"
+							onclick = "[ScriptedGui.Execute( GreatHolyWarWindow.GetScope )]"
+							visible = "[ScriptedGui.IsShown( GreatHolyWarWindow.GetScope )]"
+							text = "[SelectLocalization(GreatHolyWar.IsPledgedAttacker( GetPlayer ), 'GHW_WITHDRAW', 'GHW_PLEDGE')]"
+						}
+
+						button_standard = {
+							name = "great_holy_war_give_gold"
+							size = { 200 30 }
+							datacontext = "[GetScriptedGui( 'great_holy_war_give_gold' )]"
+							enabled = "[ScriptedGui.IsValid( GreatHolyWarWindow.GetScope )]"
+							tooltip = "[GreatHolyWarWindow.GetGiveGoldTooltip(ScriptedGui.Self, GreatHolyWarWindow.GetScope)]"
+							onclick = "[ScriptedGui.Execute( GreatHolyWarWindow.GetScope )]"
+							visible = "[ScriptedGui.IsShown( GreatHolyWarWindow.GetScope )]"
+							text = "GHW_GIVE_GOLD"
+						}
+
+						button_standard = {
+							name = "toggle_defense_pledge"
+							size = { 200 30 }
+							datacontext = "[GetScriptedGui( 'toggle_great_holy_war_pledge_defense' )]"
+							enabled = "[ScriptedGui.IsValid( GreatHolyWarWindow.GetScope )]"
+							tooltip = "[GreatHolyWarWindow.GetPledgeTooltip(ScriptedGui.Self, GreatHolyWarWindow.GetScope)]"
+							onclick = "[ScriptedGui.Execute( GreatHolyWarWindow.GetScope )]"
+							visible = "[ScriptedGui.IsShown( GreatHolyWarWindow.GetScope )]"
+							text = "[SelectLocalization(GreatHolyWar.IsPledgedDefender( GetPlayer ), 'GHW_WITHDRAW', 'GHW_PLEDGE')]"
+						}
+
+						button_standard = {
+							name = "directed_defense_pledge"
+							size = { 200 30 }
+							datacontext = "[GetScriptedGui( 'join_great_holy_war_directed_defense' )]"
+							enabled = "[ScriptedGui.IsValid( GreatHolyWarWindow.GetScope )]"
+							tooltip = "[GreatHolyWarWindow.GetPledgeTooltip(ScriptedGui.Self, GreatHolyWarWindow.GetScope)]"
+							onclick = "[ScriptedGui.Execute( GreatHolyWarWindow.GetScope )]"
+							visible = "[ScriptedGui.IsShown( GreatHolyWarWindow.GetScope )]"
+							text = "[SelectLocalization(GreatHolyWar.IsPledgedDefender( GetPlayer ), 'GHW_WITHDRAW', 'GHW_PLEDGE')]"
+						}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+
+						text_single = {
+							datacontext = "[GetScriptedGui( 'not_pledged_not_donated_tooltip' )]"
+							visible = "[ScriptedGui.IsShown( GreatHolyWarWindow.GetScope )]"
+							text = "GHW_TITLE_NOT_PLEDGED"
+						}
+
+						text_single = {
+							datacontext = "[GetScriptedGui( 'not_pledged_donated_tooltip' )]"
+							visible = "[ScriptedGui.IsShown( GreatHolyWarWindow.GetScope )]"
+							text = "GHW_TITLE_NOT_PLEDGED_DONATED"
+						}
+					}
+
+
+					button_standard = {
+						name = "change_target"
+						datacontext = "[GetScriptedGui( 'change_target' )]"
+						visible = "[ScriptedGui.IsShown( GreatHolyWarWindow.GetScope )]"
+						enabled = "[ScriptedGui.IsValid( GreatHolyWarWindow.GetScope )]"
+						tooltip = "[SelectLocalization(ScriptedGui.IsValid(GreatHolyWarWindow.GetScope), 'GHW_CHANGE_TARGET_TT', 'GHW_PLEDGE_FIRST_TT')]"
+						onclick = "[GreatHolyWarWindow.ChangeTarget]"
+						text = "GHW_CHANGE_TARGET"
+					}
+				}
+			}
+		}
+
+		expand = {}
+
+		vbox = {
+			name = "tabs"
+			visible = "[GetVariableSystem.HasValue( 'ghw_view', 'tab_view' )]"
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			size = { 0 600 }
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+
+
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						onclick = "[GetVariableSystem.Set( 'ghw_tab', 'attackers' )]"
+						down = "[GetVariableSystem.HasValue( 'ghw_tab', 'attackers' )]"
+
+						text = "GHW_TAB_ATTACKERS"
+
+					}
+
+					button_tab = {
+						layoutpolicy_horizontal = expanding
+						onclick = "[GetVariableSystem.Set( 'ghw_tab', 'defenders' )]"
+						down = "[GetVariableSystem.HasValue( 'ghw_tab', 'defenders' )]"
+
+						text = "GHW_TAB_DEFENDERS"
+					}
+				}
+			}
+
+			scrollbox = {
+				name = "tab_attackers"
+				visible = "[GetVariableSystem.HasValue( 'ghw_tab', 'attackers' )]"
+
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				blockoverride "scrollbox_content"
+				{
+					vbox = {
+						name = "attackers"
+						datamodel = "[GreatHolyWar.GetPledgedAttackers]"
+						datacontext = "[GreatHolyWarWindow]"
+						layoutpolicy_horizontal = expanding
+
+						item = {
+
+							hbox = {
+								name = "faith_list_item"
+								datacontext = "[GreatHolyWarParticipant.GetParticipant]"
+								layoutpolicy_horizontal = expanding
+								using = tooltip_nw
+								size = { 0 110 }
+
+								background = {
+									using = Background_Area_Dark
+									alpha = 0.3
+								}
+
+
+
+								vbox = {
+									name = "rank_and_total_score"
+									visible = "[GreatHolyWar.HasWarStarted]"
+									min_width = 100
+									max_width = 100
+									text_single = {
+										datacontext = "[Character]"
+										text = "[GreatHolyWarWindow.GetRankForCharacter( Character.Self )]"
+										tooltip = "GHW_RANK_TT"
+									}
+
+									text_single = {
+										datacontext = "[Character]"
+										text = "[GreatHolyWarWindow.GetScore( Character.Self ).GetScorePercent|0V]%"
+										tooltip = "GHW_SCORE_TT"
+									}
+
+									text_single = {
+										name = "score"
+										text = "[GreatHolyWarWindow.GetScore( Character.Self ).GetScore|0V]"
+										tooltip = "GHW_MY_SCORE_OTHER_TT"
+									}
+								}
+
+								portrait_head = {
+									using = tooltip_ws
+
+									blockoverride "opinion_box" {}
+
+
+								}
+								hbox = {
+									layoutpolicy_horizontal = expanding
+
+									vbox = {
+										margin_left = 10
+										margin_right = 10
+										name = "name_and_info"									
+										ignoreinvisible = yes
+
+										text_multi = {
+											visible = "[Not(Character.IsLocalPlayer)]"
+											text = "[Character.GetUINameNoTooltip|U]"
+											tooltip = "[Character.GetUINameNoTooltip|U]"
+											autoresize = yes
+											max_width = 355
+											layoutpolicy_horizontal = expanding
+										}
+
+										text_single = {
+											visible = "[Character.IsLocalPlayer]"
+											text = "THIS_IS_YOU_STATIC"
+											layoutpolicy_horizontal = expanding
+										}
+
+										text_single = {
+											text = "GHW_MILITARY_STRENGTH"
+											layoutpolicy_horizontal = expanding
+										}
+
+										text_multi = {
+											name = "beneficiary"
+											visible = "[Character.GetBeneficiary.IsValid]"
+											text = "GHW_BENEFICIARY"
+											autoresize = yes
+											max_width = 355
+											layoutpolicy_horizontal = expanding
+										}
+
+										text_single = {
+											name = "no_beneficiary"
+											visible = "[Not(Character.GetBeneficiary.IsValid)]"
+											text = "GHW_NO_BENEFICIARY"
+											layoutpolicy_horizontal = expanding
+										}
+									}
+									expand = {}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			scrollbox = {
+				name = "tab_defenders"
+				visible = "[GetVariableSystem.HasValue( 'ghw_tab', 'defenders' )]"
+
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+
+				blockoverride "scrollbox_content"
+				{
+					vbox = {
+						name = "holy_sites"
+						datamodel = "[GreatHolyWar.GetPledgedDefenders]"
+						datacontext = "[GreatHolyWarWindow]"
+						layoutpolicy_horizontal = expanding
+
+						item = {
+							hbox = {
+								name = "faith_list_item"
+								datacontext = "[GreatHolyWarParticipant.GetParticipant]"
+								layoutpolicy_horizontal = expanding
+								using = tooltip_nw
+								size = { 0 110 }
+
+								background = {
+									using = Background_Area_Dark
+									alpha = 0.3
+								}
+
+								vbox = {
+									name = "rank_and_total_score"
+									visible = "[GreatHolyWar.HasWarStarted]"
+									layoutpolicy_horizontal = expanding
+									min_width = 100
+									max_width = 100
+
+									text_single = {
+										datacontext = "[Character]"
+										text = "[GreatHolyWarWindow.GetScore( Character.Self ).GetScorePercent|0V]%"
+										tooltip = "GHW_SCORE_TT"
+									}
+
+									text_single = {
+										name = "score"
+										text = "[GreatHolyWarWindow.GetScore( Character.Self ).GetScore|0V]"
+										tooltip = "GHW_MY_SCORE_OTHER_TT"
+									}
+								}
+
+								portrait_head = {
+									using = tooltip_ws
+
+									blockoverride "opinion_box"	{}
+
+								}
+
+
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									vbox = {
+										margin_left = 10
+										name = "name_and_info"
+
+										text_multi = {
+											text = "[Character.GetUINameNoTooltip|U]"
+											tooltip = "[Character.GetUINameNoTooltip|U]"
+											autoresize = yes
+											max_width = 355
+											layoutpolicy_horizontal = expanding
+										}
+
+										text_single = {
+											text = "GHW_MILITARY_STRENGTH"
+											layoutpolicy_horizontal = expanding
+										}
+									}
+									expand = {}
+								}
+							}
+						}
+					}
+				}
+
+				expand = {}
+
+			}
+
+			hbox = {
+				visible = "[GetVariableSystem.HasValue( 'ghw_view', 'tab_view' )]"
+				name = "buttons"
+				spacing = 10
+				margin = { 10 10 }
+
+				button_standard = {
+					name = "back"
+					text = "BACK_LABEL"
+					onclick = "[GetVariableSystem.Set( 'ghw_view', 'main_view' )]"
+				}
+			}
+
+		}
+	}
+}

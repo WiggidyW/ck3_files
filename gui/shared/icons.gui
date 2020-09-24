@@ -1,0 +1,113 @@
+types IconTypes
+{
+    type icon_flat_standard = icon
+    {
+        modify_texture = {
+            texture = "gfx/interface/master_textures/master_button_base.dds"
+            blend_mode = add
+            framesize = { 96 96 }
+
+            block "master_color_frame" {
+                frame = 7
+            }
+        }
+    }
+
+    type icon_doctrine = icon_flat_standard
+    {
+        size = { 60 60 }
+    }
+
+    type icon_building = icon_flat_standard
+    {
+        size = { 75 65 }
+    }
+
+    type highlight_icon_building = button_icon
+    {
+        size = { 75 65 }
+        alwaystransparent = yes
+    }
+
+    type icon_building_tab = button_icon
+    {
+        size = { 75 65 }
+    }
+
+    type highlight_icon_lifestyle_focus = button_icon
+    {
+        size = { 80 80 }
+    }
+
+    #### FRONTEND ICONS ####
+    type icon_observer = icon
+    {
+        texture = "gfx/interface/frontend/icon_observer.dds"
+    }
+
+    type icon_trait = container {
+        icon = {
+            alwaystransparent = yes
+
+            using = Animation_Glow_Pulse
+
+            block "glow"
+            {
+                glow = {
+                    visible = "[Or(Trait.IsGenetic(), Trait.IsInheritable())]"
+                    using = Color_Blue
+                    glow_radius = 5
+                    using = Glow_Standard
+                }
+            }
+
+            tooltipwidget = {
+                using = character_trait_tooltip
+            }
+
+            block "icon_size"
+            {
+                size = { 50 50 }
+            }
+
+            block "texture"
+            {
+                texture = "[Trait.GetIcon(Character.Self)]"
+            }
+
+            block "tooltip_placement"
+            {
+                using = tooltip_se
+            }
+        }
+
+        #icon = {
+        #	visible = "[Or(Trait.IsGenetic, Trait.IsInheritable)]"
+        #	parentanchor = right
+        #	position = { 2 0 }
+        #	texture = "gfx/interface/icons/traits/congenital.dds"
+        #}
+
+        # icon = {
+        # 	name = "overlay"
+        # 	alwaystransparent = yes
+        # 	texture = "[Trait.GetIconOverlayForLocalPlayer]"
+
+        # 	block "overlay_position"
+        # 	{
+        # 		position = { -10 -10 }
+        # 	}
+
+        # 	block "overlay_anchor"
+        # 	{
+        # 		parentanchor = "bottom|right"
+        # 		widgetanchor = "vcenter|hcenter"
+        # 	}
+
+        # 	block "overlay_size"
+        # 	{
+        # 		size = { 24 24 }
+        # 	}
+        # }
+    }
+}

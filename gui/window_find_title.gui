@@ -1,0 +1,110 @@
+window = {
+	name = "find_title_view"
+	size = { 450 700 }
+	parentanchor = top|right
+	position = { -80 130 }
+	layer = windows_layer
+
+	using = Window_Background
+	using = Window_Decoration_Spike
+	using = Animation_ShowHide_Standard
+
+	vbox = {
+		using = Window_Margins
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "header_text"
+			{
+				text = "FIND_TITLE"
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[FindTitleView.Close]"
+			}
+		}
+
+		hbox = {
+			margin = { 0 5 }
+			spacing = 5
+
+			icon = {
+				name = "hourglass"
+				texture = "gfx/interface/icons/temp_icon_search.dds"
+				color = { 0.788235 0.643137 0.419608 1 }
+				size = { 35 35 }
+			}
+
+			editbox = {
+				name = "input"
+				size = { 320 36 }
+				margin = { 5 0 }
+				alwaystransparent = no
+				focuspolicy = all
+				onreturnpressed = "[FindTitleView.OnDone]"
+				ontextedited = "[FindTitleView.OnEdit]"
+				using = Font_Type_Standard
+				using = Font_Size_Small
+				default_format = "#high"
+
+				background =  {
+					using = Background_Area_Border
+				}
+			}
+		}
+
+		scrollbox = {
+			name = "title_grid"
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			blockoverride "scrollbox_content"
+			{
+				vbox = {
+					datamodel = "[FindTitleView.GetTitles]"
+					layoutpolicy_horizontal = expanding
+					spacing = 3
+
+					item = {
+						button_standard = {
+							name = "title_button"
+							datacontext = "[LandedTitleRef.Get]"
+							layoutpolicy_horizontal = expanding
+							size = { 0 50 }
+							
+							onclick = "[ToggleOnCoatOfArmsClick(Title.GetID)]"
+							onrightclick = "[DefaultOnCoatOfArmsRightClick(Title.GetID)]"
+							button_ignore = none
+							down = "[Title.IsShownInTitleView]"
+							text_single = {
+								visible = "[Title.GetHolder.IsValid]"
+								text = "[Title.GetNameNoTooltip]"
+								parentanchor = vcenter|left
+								position = {50 0 }
+								default_format = "#high"
+							}
+
+							text_single = {
+								visible = "[Not(Title.GetHolder.IsValid)]"
+								text = "[Title.GetNameNoTooltip]"
+								parentanchor = vcenter|left
+								position = {50 0 }
+								default_format = "#low"
+							}
+
+							coa_title_tiny_crown = {
+								parentanchor = vcenter
+								position = {5 -1 }
+							}
+						}
+
+
+					}
+				}
+			}
+		}
+	}
+}
+

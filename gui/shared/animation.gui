@@ -1,0 +1,879 @@
+
+######################################################
+############### ANIMATION TEMPLATES ##################
+######################################################
+
+# Curves
+template Animation_Curve_Default
+{
+    bezier = { 0.25 0.1 0.25 1 }
+}
+
+template Animation_Transition_Start
+{
+    bezier = { 0.5 0 0 0 }
+}
+
+template Animation_Transition_End
+{
+    bezier = { 1 1 0.5 1 }
+}
+
+# Fade animations
+
+template Animation_FadeIn_Standard
+{
+    using = Animation_Curve_Default
+    duration = 0.25
+
+    alpha = 1.0
+}
+
+template Animation_FadeOut_Standard
+{
+    using = Animation_Curve_Default
+    duration = 0.25
+
+    alpha = 0.0
+}
+
+template Animation_FadeIn_Quick
+{
+    using = Animation_Curve_Default
+    duration = 0.15
+
+    alpha = 1.0
+}
+
+template Animation_FadeOut_Quick
+{
+    using = Animation_Curve_Default
+    duration = 0.15
+
+    alpha = 0.0
+}
+
+# Package of standard show/hide states
+template Animation_ShowHide_Standard
+{
+    state = {
+        name = _show
+        using = Animation_FadeIn_Standard
+    }
+
+    state = {
+        name = _hide
+        using = Animation_FadeOut_Standard
+    }
+}
+
+template Animation_ShowHide_Quick
+{
+    state = {
+        name = _show
+        using = Animation_FadeIn_Quick
+    }
+
+    state = {
+        name = _hide
+        using = Animation_FadeOut_Quick
+    }
+}
+
+template Animation_Tab_Switch
+{
+    state = {
+        name = _show
+        using = Animation_FadeIn_Quick
+    }
+
+    state = {
+        name = _hide
+        alpha = 0
+    }
+}
+
+### Window content refresh animation
+template Animation_Refresh_FadeOut
+{
+    alpha = 0.5
+    next = "fadein"
+    using = Animation_Curve_Default
+}
+
+template Animation_Refresh_FadeIn
+{
+    name = "fadein"
+    alpha = 1
+    duration = 0.4
+    bezier = { 0.5 0 1 0.5 }
+}
+
+template Animation_Glow_Pulse
+{
+    state = {
+        trigger_on_create = yes
+
+        name = max_glow
+        next = min_glow
+        duration = 1
+        using = Animation_Curve_Default
+
+        glow_alpha = 0.8
+    }
+
+    state = {
+        name = min_glow
+        next = max_glow
+        duration = 1.6
+        using = Animation_Curve_Default
+
+        glow_alpha = 0.4
+    }
+}
+
+### STATUS
+
+template Status_Bad
+{
+    texture = "gfx/interface/tiles/tile_bg_status.dds"
+    color = { 0.5 0.2 0.15 0.7 }
+    spriteType = Corneredtiled
+    spriteborder = { 20 10 }
+
+    margin = { 5 0 }
+    margin_bottom = 3
+    margin_top = -3
+}
+
+template Status_Mixed
+{
+    texture = "gfx/interface/tiles/tile_bg_status.dds"
+    color = { 0.5 0.5 0.1 0.7 }
+    spriteType = Corneredtiled
+    spriteborder = { 20 10 }
+
+    margin = { 5 0 }
+    margin_bottom = 3
+    margin_top = -3
+}
+
+template Status_Good
+{
+    texture = "gfx/interface/tiles/tile_bg_status.dds"
+    color = { 0.24 0.32 0.18 0.7 }
+    spriteType = Corneredtiled
+    spriteborder = { 20 10 }
+
+    margin = { 5 0 }
+    margin_bottom = 3
+    margin_top = -3
+}
+
+
+template Status_Suggestion
+{
+    texture = "gfx/interface/tiles/tile_bg_status.dds"
+    color = { 0.3 0.45 0.6 0.9 }
+    spriteType = Corneredtiled
+    spriteborder = { 20 10 }
+
+    margin = { 5 0 }
+    margin_bottom = 3
+    margin_top = -3
+}
+
+template Status_Highlight
+{
+    texture = "gfx/interface/tiles/tile_bg_status.dds"
+    color = { 0.5 0.4 0.25 0.5 }
+    spriteType = Corneredtiled
+    spriteborder = { 20 10 }
+
+    margin = { 5 0 }
+    margin_bottom = 3
+    margin_top = -3
+}
+
+
+### MAP ICONS
+
+template Animation_MapIcon_Fade
+{
+    state = {
+        name = _show
+        duration = 0.15
+        alpha = 1
+
+        block "icon_size" {}
+    }
+
+    state = {
+        name = _hide
+        size = { 0 0 }
+        duration = 0.15
+        alpha = 0
+    }
+
+}
+
+
+### GLOW TEMPLATES
+template Glow_Standard
+{
+    glow_generation_rules= {
+        glow_max_radius = 12
+        glow_alpha_mask = 0
+        glow_blur_passes = 10
+        glow_texture_downscale = 2.5f
+        glow_ignore_inside_pixels = yes
+    }
+}
+
+### ANIMATIONS
+
+types Animations
+{
+    # Use this to signal that an action means serious business, ie. on a button that starts a war
+    type animation_aggressive = widget {
+        parentanchor = center
+        size = { 100% 100% }
+
+        state = {
+            name = _show
+            trigger_on_create = yes
+            on_start = "[PdxGuiWidget.AccessChild('fire').TriggerAnimation('show')]"
+            on_start = "[PdxGuiWidget.AccessChild('fire_2').TriggerAnimation('show_2')]"
+        }
+
+        icon = {
+            name = "fire"
+            size = { 100% 100% }
+
+            texture = "gfx/interface/temp/temp_button_upward_flow.dds"
+            spriteType = Corneredtiled
+
+            modify_texture = {
+                name = "mask"
+                texture = "gfx/interface/temp/temp_entry_button_glow_mask_3.dds"
+                blend_mode = alphamultiply
+            }
+
+            modify_texture = {
+                name = "mask_2"
+                texture = "gfx/interface/temp/temp_entry_button_glow_mask.dds"
+                blend_mode = alphamultiply
+            }
+
+            modify_texture = {
+                name = "mask_3"
+                texture = "gfx/interface/tiles/tile_fade_mask_2.dds"
+                blend_mode = alphamultiply
+            }
+
+            state = {
+                name = show
+                next = shimmer
+                duration = 0
+                alpha = 1
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 -0.8 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 0 }
+                }
+            }
+
+            state = {
+                name = shimmer
+                next = a
+                duration = 1
+                alpha = 1
+
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 0 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 0.8 }
+                }
+            }
+
+            state = {
+                name = a
+                next = b
+                duration = 0.25
+                using = Animation_Curve_Default
+                alpha = 0
+
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 0 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 0.8 }
+                }
+            }
+
+            state = {
+                name = b
+                next = c
+                duration = 1
+                using = Animation_Curve_Default
+                alpha = 0
+
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 -1 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 -0.2 }
+                }
+            }
+
+
+            state = {
+                name = c
+                next = show
+                duration = 0.5
+                using = Animation_Curve_Default
+                alpha = 1
+
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 -0.8 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 0 }
+                }
+            }
+        }
+
+        icon = {
+            name = "fire_2"
+            size = { 100% 100% }
+
+            texture = "gfx/interface/temp/temp_button_upward_flow.dds"
+            spriteType = Corneredtiled
+
+            modify_texture = {
+                name = "mask"
+                texture = "gfx/interface/temp/temp_entry_button_glow_mask_3.dds"
+                blend_mode = alphamultiply
+            }
+
+            modify_texture = {
+                name = "mask_2"
+                texture = "gfx/interface/temp/temp_entry_button_glow_mask.dds"
+                blend_mode = alphamultiply
+            }
+
+            modify_texture = {
+                name = "mask_3"
+                texture = "gfx/interface/tiles/tile_fade_mask_2.dds"
+                blend_mode = alphamultiply
+            }
+
+            state = {
+                name = show_2
+                next = d
+                duration = 0
+                alpha = 0
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 -1 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 -0.2 }
+                }
+            }
+
+            ###### DELAY
+            state = {
+                name = d
+                next = f
+
+                duration = 1.15
+                alpha = 0
+
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 -1 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 -0.2 }
+                }
+            }
+
+            state = {
+                name = f
+                next = show
+                duration = 0.25
+                alpha = 1
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 -0.8 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 0 }
+                }
+            }
+
+            state = {
+                name = show
+                next = shimmer
+                duration = 0
+                alpha = 1
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 -0.8 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 0 }
+                }
+            }
+
+            state = {
+                name = shimmer
+                next = a
+                duration = 1
+                alpha = 1
+
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 0 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 0.8 }
+                }
+            }
+
+            state = {
+                name = a
+                next = b
+                duration = 0.25
+                using = Animation_Curve_Default
+                alpha = 0
+
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 0 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 0.8 }
+                }
+            }
+
+            state = {
+                name = b
+                next = c
+                using = Animation_Curve_Default
+                alpha = 0
+                duration = 1
+
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 -1 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 -0.2 }
+                }
+            }
+
+            state = {
+                name = c
+                next = show
+                duration = 0.5
+                using = Animation_Curve_Default
+                alpha = 1
+
+                modify_texture = {
+                    name = "mask"
+                    translate_uv = { 0 -0.8 }
+                }
+
+                modify_texture = {
+                    name = "mask_2"
+                    translate_uv = { 0 0 }
+                }
+            }
+        }
+    }
+
+
+    # "Look at me!" #### ATTENTION ANIMATION IS COMMENTED OUT IN ALL INTERFACES, UNLESS SPECIFICALLY REQUESTED
+    type animation_attention = icon {
+        name = "emphasis_effect"
+        parentanchor = center
+        size = { 160% 160% }
+
+        texture = "gfx/interface/frontend/text_glow.dds"
+
+        state = {
+            trigger_on_create = yes
+            name = a
+            next = b
+
+            using = Animation_Curve_Default
+            duration = 0.8
+            alpha = 0.8
+        }
+
+        state = {
+            name = b
+            next = a
+
+            using = Animation_Curve_Default
+            duration = 1.8
+            alpha = 0
+        }
+    }
+
+    # "Look at me!" For textbuttons
+    type animation_attention_text = icon {
+        name = "emphasis_effect"
+        parentanchor = center
+        size = { 100% 100% }
+
+        spriteType = Corneredtiled
+        spriteborder = { 10 10 }
+
+        texture = "gfx/interface/effects/attention_text.dds"
+        # tintcolor = { 1 0.9 0.5 0.8 }
+        using = Color_Orange
+
+        state = {
+            trigger_on_create = yes
+            name = a
+            next = b
+
+            using = Animation_Curve_Default
+            duration = 0.8
+            alpha = 1
+        }
+
+        state = {
+            name = b
+            next = a
+
+            using = Animation_Curve_Default
+            duration = 1.8
+            alpha = 0
+        }
+    }
+
+    ### current special event option look
+    type animation_glow_event = icon {
+        size = { 95% 100% }
+        parentanchor = center
+        frame = 2
+        texture = "gfx/interface/buttons/button_mouseover_event.dds"
+        spriteType = Corneredstretched
+        spriteborder = { 20 20 }
+        framesize = { 238 63 }
+
+        modify_texture = {
+            name = "overlay"
+            texture = "gfx/interface/buttons/button_standard_overlay.dds"
+            spriteType = Corneredstretched
+            spriteborder = { 3 3 }
+            blend_mode = overlay
+        }
+
+        # state = {
+        #     trigger_on_create = yes
+        #     name = a
+        #     next = b
+
+        #     using = Animation_Curve_Default
+        #     duration = 1
+        #     alpha = 1
+        # }
+
+        # state = {
+        #     name = b
+        #     next = a
+
+        #     using = Animation_Curve_Default
+        #     duration = 1.4
+        #     alpha = 0.5
+        # }
+    }
+
+    ## Lifestyle HUD animation
+    type animation_sonar = icon {
+        name = "effect_sonar"
+        parentanchor = center
+        size = { 100% 100% }
+
+        texture = "gfx/interface/effects/effects_ring.dds"
+        alwaystransparent = yes
+        alpha = 0
+        scale = 0
+
+        state = {
+            trigger_on_create = yes
+            name = a
+            next = c
+
+            using = Animation_Curve_Default
+            duration = 0.3
+            alpha = 1
+            scale = 0
+        }
+
+        state = {
+            name = c
+            next = b
+
+            using = Animation_Curve_Default
+            duration = 0.9
+            alpha = 0
+            scale = 3
+        }
+
+        state = {
+            name = b
+
+            using = Animation_Curve_Default
+            duration = 1
+            alpha = 0
+            scale = 0
+        }
+    }
+
+    # # sparkle sparkle, CUT??
+    # type animation_new = icon {
+    #     name = "shimmering_stars"
+    #     parentanchor = center
+    #     size = { 100% 100% }
+    #     texture = "gfx/interface/temp/temp_entry_button_glow.dds"
+    #     spriteType = Corneredtiled
+    #     #alpha = 0.3
+
+    #     modify_texture = {
+    #         name = "mask"
+    #         texture = "gfx/interface/temp/temp_entry_button_glow_mask.dds"
+    #         blend_mode = alphamultiply
+    #         translate_uv = { -0.2 0 }
+    #     }
+
+    #     modify_texture = {
+    #         name = "glow"
+    #         texture = "gfx/interface/frontend/text_glow.dds"
+    #         blend_mode = colordodge
+    #     }
+
+    #     state = {
+    #         trigger_on_create = yes
+    #         name = a
+    #         next = b
+    #         duration = 6
+
+    #         modify_texture = {
+    #             name = "mask"
+    #             translate_uv = { 0.2 0 }
+    #             rotate_uv = 0
+    #         }
+
+    #     }
+
+    #     state = {
+    #         name = b
+    #         next = a
+    #         duration = 6
+
+    #         modify_texture = {
+    #             name = "mask"
+    #             translate_uv = { -0.2 0 }
+    #         }
+    #     }
+
+    #     # name = "sparkle"
+    #     # size = { 100% 100% }
+    #     # gfxtype = animatedbuttongfx
+
+    #     # texture = "gfx/interface/temp/sparkle.dds"
+    #     # framesize = { 49 49 }
+    #     # loopinterval = 1
+    #     # spriteType = Corneredstretched
+    #     # spriteborder = { 20 20 }
+    #     # alpha = 0.8
+    # }
+
+
+    # # A more subtle version of attention, when you want to highlight one choice over another. Also green
+    # type animation_emphasis = icon {
+    #     name = "emphasis_effect"
+    #     parentanchor = center
+    #     size = { 160% 160% }
+
+    #     texture = "gfx/interface/frontend/text_glow.dds"
+    # tintcolor = { 0.4 0.8 0.4 1 }
+
+    #     state = {
+    #         trigger_on_create = yes
+    #         name = a
+    #         next = b
+
+    #         using = Animation_Curve_Default
+    #         duration = 0.8
+    #         alpha = 0.8
+    #     }
+
+    #     state = {
+    #         name = b
+    #         next = a
+
+    #         using = Animation_Curve_Default
+    #         duration = 1.8
+    #         alpha = 0
+    #     }
+    # }
+
+    # # This briefly signals when something good happens, ie. you gain resources. NO LOOP
+    # type animation_good = icon {
+    #     name = "emphasis_effect"
+    #     parentanchor = center
+    #     size = { 100% 100% }
+
+    #     texture = "gfx/interface/frontend/text_glow.dds"
+    #     tintcolor = { 0.4 0.8 0.4 1 }
+
+    #     state = {
+    #         trigger_on_create = yes
+    #         name = a
+    #         next = b
+
+    #         using = Animation_Curve_Default
+    #         duration = 1
+    #         alpha = 0
+    #     }
+
+    #     state = {
+    #         name = b
+    #         next = c
+
+    #         using = Animation_Curve_Default
+    #         duration = 2
+    #         alpha = 1
+    #     }
+
+    #     state = {
+    #         name = c
+    #         duration = 1
+
+    #         using = Animation_Curve_Default
+    #         alpha = 0
+    #     }
+
+    #     # state = {
+    #     #     trigger_on_create = yes
+    #     #     name = a
+    #     #     next = b
+
+    #     #     using = Animation_Curve_Default
+    #     #     duration = 0.8
+    #     #     alpha = 0.8
+    #     # }
+
+    #     # state = {
+    #     #     name = b
+    #     #     next = a
+
+    #     #     using = Animation_Curve_Default
+    #     #     duration = 1.8
+    #     #     alpha = 0
+    #     # }
+    # }
+
+    # # Same as above, but bad. NO LOOP
+    # type animation_bad = icon {
+    #     parentanchor = center
+    #     size = { 100% 100% }
+
+    #     texture = "gfx/interface/frontend/text_glow.dds"
+    #     tintcolor = { 1 0 0 1 }
+
+    #     state = {
+    #         trigger_on_create = yes
+    #         name = a
+    #         next = b
+
+    #         using = Animation_Curve_Default
+    #         duration = 1
+    #         alpha = 0
+    #     }
+
+    #     state = {
+    #         name = b
+    #         next = c
+
+    #         using = Animation_Curve_Default
+    #         duration = 2
+    #         alpha = 1
+    #     }
+
+    #     state = {
+    #         name = c
+
+    #         using = Animation_Curve_Default
+    #         duration = 1
+    #         alpha = 0
+    #     }
+    # }
+
+    # type animation_glow = icon {
+    #     size = { 150% 150% }
+    #     parentanchor = center
+    #     frame = 2
+    #     texture = "gfx/interface/buttons/button_mouseover.dds"
+    #     spriteType = Corneredstretched
+    #     spriteborder = { 20 20 }
+    #     framesize = { 238 63 }
+
+    #     state = {
+    #         trigger_on_create = yes
+    #         name = a
+    #         next = b
+
+    #         using = Animation_Curve_Default
+    #         duration = 1
+    #         alpha = 1
+    #     }
+
+    #     state = {
+    #         name = b
+    #         next = a
+
+    #         using = Animation_Curve_Default
+    #         duration = 1.4
+    #         alpha = 0.5
+    #     }
+    # }
+}

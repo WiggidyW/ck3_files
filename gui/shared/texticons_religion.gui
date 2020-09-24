@@ -1,0 +1,298 @@
+texticon = {
+	icon = catholic_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/catholic.dds"	
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = orthodox_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/orthodox.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = buddhism_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/buddhism.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = germanic_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/germanic.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = germanic_reformed_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/germanic_reformed.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = hellenic_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/hellenic.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = hellenic_reformed_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/hellenic_reformed.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = hinduism_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/hinduism.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = ibadi_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/ibadi.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = jainism_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/jainism.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = judaism_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/judaism.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = coptic_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/coptic.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = nestorian_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/nestorian.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = pagan_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/pagan.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = pagan_reformed_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/pagan_reformed.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = baltic_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/baltic.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = baltic_reformed_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/baltic_reformed.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = shia_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/shia.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = slavic_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/slavic.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = slavic_reformed_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/slavic_reformed.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = sunni_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/sunni.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = finno_ugric_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/finno_ugric.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = finno_ugric_reformed_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/finno_ugric_reformed.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = tengri_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/tengri.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = tengri_reformed_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/tengri_reformed.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = west_african_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/west_african.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+texticon = {
+	icon = west_african_reformed_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/west_african_reformed.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = zoroastrian_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/zoroastrian.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = zunist_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/zunist.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = zunist_reformed_icon
+	iconsize = {
+		texture = "gfx/interface/icons/religion/zunist_reformed.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}

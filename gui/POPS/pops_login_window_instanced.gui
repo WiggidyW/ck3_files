@@ -1,0 +1,38 @@
+pops_login_window = {
+
+	# blockoverride "pops_button_style"
+	# {
+	# 	# upframe = 1
+	# 	# overframe = 2
+	# 	# downframe = 3
+	# 	# texture = "gfx/interface/frontend/new_game_button.dds"
+	# 	# framesize = { 444 104 }
+	# 	# gfxtype = framedbuttongfx
+	# 	# spriteType = CorneredStretched
+	# 	# # spriteborder = { 4 4 }
+	# 	# # effectname = "NoHighlight"
+	# 	# button_standard = {
+
+	# 	# }
+	# 	intersectionmask = yes
+
+	# }
+
+	blockoverride "pops_text_style"
+	{
+		font = StandardGameFont
+		align = left
+		# fontsize = 12
+		# fontcolor = { 1 1 1 1 }
+	}
+
+	blockoverride "pops_button_text_style"
+	{
+		name = "pops_button_text"
+		# parentanchor = center
+		font = StandardGameFont
+		# fontsize = 15
+		# autoresize = yes
+		align = center
+	}
+}

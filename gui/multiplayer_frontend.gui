@@ -1,0 +1,112 @@
+JominiMultiplayerFrontendView = {
+	name = "JominiMultiplayerView"
+	size = { 100% 100% }
+
+	state = {
+		name = _show
+
+		using = Animation_FadeIn_Standard
+		using = Sound_WindowShow_Standard
+	}
+
+	state = {
+		name = _hide
+
+		using = Animation_FadeOut_Standard
+		using = Sound_WindowHide_Standard
+	}
+
+	button = {
+		name = "copy_build_version"
+		parentanchor = top|right
+		position = { -15 -12 }
+		size = { 400 80 }
+
+		onclick = "[CopyBuildVersionInfoToClipboard]"
+		tooltip = "[GetBuildVersionDescriptionWithClickToCopy]"
+		tooltip_parentanchor = bottom|right
+		tooltip_widgetanchor = top|right
+
+		textbox = {
+			name = "build_version"
+			parentanchor = center
+			size = { 100% 100% }
+			text = "TOP_BAR_VERSION"
+			fontcolor = { 1 1 1 0.15 }
+			align = right
+		}
+	}
+
+	blockoverride "menu" {}
+
+	blockoverride "background"
+	{
+		proportional_icon = {
+			size = { 100% 100% }
+			texture = "[GetRandomFrontendIllustration]"
+		}
+	}
+
+	widget = {
+		name = "panel_right"
+		size = { 790 100% }
+		parentanchor = left
+
+		background = {
+			name = "background_loadgame"
+			texture = "gfx/interface/tiles/tile_window_background_sidebar.dds"
+			margin = { 10 10 }
+
+			spriteType = Corneredtiled
+			spriteborder = { 18 18 }
+
+			modify_texture = {
+				name = "mask"
+				texture = "gfx/interface/tiles/tile_fade_mask.dds"
+				spriteType = Corneredstretched
+				spriteborder_right = 900
+				blend_mode = alphamultiply
+				alpha = 0.25
+			}
+		}
+
+		background = {
+			using = Background_Area_Dark
+			margin = { 10 10 }
+
+
+			modify_texture = {
+				texture = "gfx/interface/tiles/stretch_bottom_fade.dds"
+				blend_mode = alphamultiply
+				alpha = 0.8
+			}
+		}
+
+		vbox = {
+			layoutpolicy_vertical = expanding
+			margin = { 10 10 }
+			
+			expand = {}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				minimumsize = { 0 40 }
+
+				button_standard = {
+					size = { 170 33 }
+					name = "back_button"
+					text = "BACK_LABEL"
+					shortcut = "close_window"
+					onclick = "[FrontEndMultiplayerView.OnBack]"
+
+					button_back = {
+						parentanchor =  left|vcenter
+						position = { 5 0 }
+					}
+				}
+
+				expand = {}
+			}
+		}
+	}
+}

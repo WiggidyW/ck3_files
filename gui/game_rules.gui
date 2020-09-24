@@ -1,0 +1,344 @@
+window = {
+	name = "game_rules"
+	size = { 100% 100% }
+	parentanchor = center|hcenter
+	movable = no
+	filter_mouse = all
+	layer = confirmation
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+	}
+
+	using = Background_Area_Dark
+
+	widget = {
+		parentanchor = center
+		size = { 1000 845 }
+		using = Window_Decoration_Spike
+		using = Window_Background
+
+		vbox = {
+			using = Window_Margins
+
+			spacing = 5
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text"
+				{
+					text = "GAME_RULES_HEADER"
+				}
+
+				blockoverride "button_close"
+				{
+					onclick = "[JominiGameRules.Hide]"
+					shortcut = "close_window"
+					clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_close"
+				}
+			}
+
+			ironman_achievements_info_hbox = {
+				name = "ironman_and_achievements"
+				layoutpolicy_horizontal = expanding
+				visible = "[Not( GameIsMultiplayer )]"
+			}
+
+			scrollbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				blockoverride "scrollbox_content"
+				{
+					fixedgridbox = {
+						addcolumn = 450
+						addrow = 170
+						datamodel_wrap = 2
+						maxhorizontalslots = 2
+						flipdirection = yes
+
+						datamodel = "[JominiGameRules.GetSettings]"
+
+						item = {
+							widget = {
+								size = { 450 170 }
+								container = {
+									datacontext = "[GuiGameRule.GetRule]"
+									datacontext = "[GuiGameRule.GetSetting]"
+									parentanchor = hcenter
+									minimumsize = { 400 160 }
+
+									background = {
+										using = Background_Area_With_Header
+										alpha = 0.8
+										margin = { 10 5 }
+										margin_bottom = 0
+									}
+
+									text_single = {
+										text = "[GameRule.GetName]"
+										max_width = 350
+										parentanchor = hcenter
+									}
+
+									game_rule_option = {
+										parentanchor = hcenter
+										position = { 0 40 }
+									}
+
+									text_multi = {
+										text = "[GameRuleSetting.GetDescription]"
+										default_format = "#low"
+										autoresize = yes
+										max_width = 400
+										position = { 0 80 }
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			expand = {}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 20
+				margin = { 0 10 }
+
+				expand = {}
+
+				button_standard = {
+					visible = "[And( IsHost, Not( HasGameStartedForTheFirstTime ) )]"
+					text = "GAME_RULES_RESET_TO_DEFAULTS_TEXT"
+					onclick = "[JominiGameRules.ResetAllToDefaults]"
+					clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_decrement"
+				}
+
+				button_primary = {
+					text = "CLOSE_LABEL"
+					visible = "[Not( And( IsHost, Not( HasGameStartedForTheFirstTime ) ) )]"
+					onclick = "[JominiGameRules.Hide]"
+					shortcut = "close_window"
+					clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_close"
+
+					size = { 200 42 }
+				}
+
+				button_primary = {
+					text = "CLOSE_LABEL"
+					visible = "[And( IsHost, Not( HasGameStartedForTheFirstTime ) )]"
+					onclick = "[JominiGameRules.ApplySettings]"
+					onclick = "[JominiGameRules.Hide]"
+					shortcut = "close_window"
+					clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_close"
+
+
+					size = { 200 42 }
+				}
+
+				expand = {}
+			}
+		}
+	}
+}
+
+types GameRuleTypes
+{
+	type game_rule_option = widget {
+		size = { 240 30 }
+
+		background = {
+			using = Background_Area_Dark
+			margin = { 5 5 }
+		}
+
+		button_select_arrow = {
+			visible = "[And( IsHost, Not( HasGameStartedForTheFirstTime ) )]"
+			size = { 25 25 }
+			parentanchor = left|vcenter
+			mirror = horizontal
+
+			block "onclick_prev"
+			{
+				onclick = "[GuiGameRule.Prev]"
+				clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_decrement"
+			}
+		}
+
+		text_single = {
+			text = "[GameRuleSetting.GetName]"
+			parentanchor = center
+			# default_format = "#color_yellow"
+			align = nobaseline
+		}
+
+		achievements_disabled_icon = {
+			visible = "[GameRuleSetting.HasFlag( 'blocks_achievements' )]"
+			parentanchor = right
+			position = { -30 4 }
+			size = { 22 22 }
+			tooltip = "GAME_RULE_BLOCKS_ACHIEVEMENTS"
+		}
+
+		button_select_arrow = {
+			visible = "[And( IsHost, Not( HasGameStartedForTheFirstTime ) )]"
+			size = { 25 25 }
+			parentanchor = right|vcenter
+
+			block "onclick_next"
+			{
+				onclick = "[GuiGameRule.Next]"
+				clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_decrement"
+			}
+		}
+	}
+
+	type flowcontainer_game_rules_mini = flowcontainer {
+		name = "difficulty_setting"
+		datacontext = "[AccessGameRules]"
+		datacontext = "[JominiGameRules.AccessNamedGameRule( 'difficulty' )]"
+		datacontext = "[GuiGameRule.GetRule]"
+		datacontext = "[GuiGameRule.GetSetting]"
+		spacing = 10
+
+		text_single = {
+			align = left
+			text = "[GameRule.GetName]:"
+			default_format = "#high"
+			max_width = 150
+			minimumsize = { 0 25 }
+		}
+
+		game_rule_option = {
+			blockoverride "onclick_prev"
+			{
+				onclick = "[GuiGameRule.Prev]"
+				onclick = "[JominiGameRules.ApplySettings]"
+				clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_decrement"
+
+			}
+			blockoverride "onclick_next"
+			{
+				onclick = "[GuiGameRule.Next]"
+				onclick = "[JominiGameRules.ApplySettings]"
+				clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_decrement"
+			}
+		}
+	}
+
+	type ironman_achievements_info_hbox = hbox
+	{
+		vbox = {
+			name = "ironman"
+
+			hbox = {
+				name = "icon_and_text"
+				spacing = 5
+				tooltip = "IRONMAN_PAUSE_MENU_TOOLTIP"
+
+
+				widget = {
+					size = { 40 40 }
+
+					ironman_disabled_icon = {
+						visible = "[Not( IsIronmanEnabled )]"
+						size = { 45 45 }
+					}
+
+					ironman_save_icon = {
+						visible = "[IsIronmanEnabled]"
+						size = { 45 45 }
+					}
+				}
+
+				vbox = {
+
+					text_label_left = {
+						text = "IRONMAN_LABEL"
+						max_width = 150
+					}
+
+					text_single = {
+						text = "[SelectLocalization( IsIronmanEnabled, 'IRONMAN_ENABLED_NO_HEADER', 'IRONMAN_DISABLED_NO_HEADER' )]"
+						default_format = "#warning"
+						max_width = 150
+						align = left
+						layoutpolicy_horizontal = expanding
+					}
+				}
+			}
+
+			spacer = {
+				size = { 0 5 }
+			}
+
+			hbox = {
+				name = "buttons"
+				visible = "[Not( HasGameStartedForTheFirstTime )]"
+				spacing = 3
+				button_standard = {
+					name = "enable"
+					text = "ENABLE_IRONMAN"
+					enabled = "[Not( IsIronmanEnabled )]"
+					onclick = "[SetIronmanEnabledStatus( '(bool)yes' )]"
+					clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_decrement"
+
+					size = { 150 42 }
+				}
+
+				button_standard = {
+					name = "disable"
+					text = "DISABLE_IRONMAN"
+					enabled = "[IsIronmanEnabled]"
+					onclick = "[SetIronmanEnabledStatus( '(bool)no' )]"
+					clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_decrement"
+
+					size = { 150 42 }
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_vertical = growing
+			hbox = {
+				name = "achievements"
+				spacing = 5
+
+				achievements_enabled_icon = {
+					visible = "[And( And( IsIronmanEnabled, IsGameChecksumOk ), Not( JominiGameRules.HasRuleWithFlag( 'blocks_achievements' ) ) )]"
+				}
+				achievements_disabled_icon = {
+					visible = "[Not( And( And( IsIronmanEnabled, IsGameChecksumOk ), Not( JominiGameRules.HasRuleWithFlag( 'blocks_achievements' ) ) ) )]"
+				}
+
+				vbox = {
+					name = "text"
+					tooltip = "[SelectLocalization( And( And( IsIronmanEnabled, IsGameChecksumOk ), Not( JominiGameRules.HasRuleWithFlag( 'blocks_achievements' ) ) ), 'ACHIEVEMENTS_ENABLED', 'ACHIEVEMENTS_DISABLED' )]"
+
+					text_label_left = {
+						text = "ACHIEVEMENTS_LABEL"
+						max_width = 150
+					}
+
+					text_single = {
+						text = "[SelectLocalization( And( And( IsIronmanEnabled, IsGameChecksumOk ), Not( JominiGameRules.HasRuleWithFlag( 'blocks_achievements' ) ) ), 'ACHIEVEMENTS_ENABLED_NO_HEADER', 'ACHIEVEMENTS_DISABLED_NO_HEADER' )]"
+						default_format = "#warning"
+						max_width = 150
+						align = left
+						layoutpolicy_horizontal = expanding
+					}
+				}
+			}
+			expand = {}
+		}
+	}
+}

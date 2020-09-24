@@ -1,0 +1,51 @@
+vbox = {
+	name = "event_window_widget_enter_text"
+	layoutpolicy_horizontal = expanding
+	margin = { 10 0 }
+	spacing = 10
+
+	text_single = {
+		name = "prompt"
+		text = event_window_widget_enter_text_prompt
+	}
+
+	editbox = {
+		name = "enter_text" # name referenced in code
+		size = { 280 60 }
+		alwaystransparent = no
+		focuspolicy = all
+		multiline = yes
+		default_format = "#high"
+		ontextedited = "[EventWindowWidgetEnterText.OnEdit]"
+
+		using = Background_Area_Border
+		background = {
+			using = Background_Area
+		}
+	}
+
+	vbox = {
+		name = "default_entries"
+		datamodel = "[EventWindowWidgetEnterText.AccessDefaultEntries]"
+		visible = "[DataModelHasItems( EventWindowWidgetEnterText.AccessDefaultEntries )]"
+
+		item = {
+			button_standard_list = {
+				name = "entry"
+				
+				size = { 220 34 }
+				background = {
+					using = Background_Area
+				}
+				
+				text = "[EventWindowWidgetEnterTextDefaultEntry.GetText]"
+				using = Font_Size_Small
+				
+				onclick = "[EventWindowWidgetEnterTextDefaultEntry.Select]"
+				down = "[EventWindowWidgetEnterTextDefaultEntry.IsSelected]"
+			}
+		}
+	}
+
+	expand = {}
+}

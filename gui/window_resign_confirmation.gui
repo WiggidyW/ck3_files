@@ -1,0 +1,124 @@
+window = {
+	name = "ingame_resign_confirmation"
+	parentanchor = center
+	layer = confirmation
+	size = { 100% 100% }
+	movable = no
+
+	button = {
+		size = { 100% 100% }
+		onclick = [ResignConfirmationWindow.Cancel]
+	}
+
+	using = Background_Fade
+
+	widget = {
+		parentanchor = center
+		using = Window_Background_Popup
+		alwaystransparent = no
+
+		vbox = {
+			set_parent_size_to_minimum = yes
+
+			margin = { 20 20 }
+			spacing = 10
+
+			header_standard = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text"
+				{
+					text = "EXIT"
+				}
+
+				blockoverride "button_close"
+				{
+					visible = no
+				}
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				visible = "[Or( ResignConfirmationWindow.IsShowSave, Not( StringIsEmpty( ResignConfirmationWindow.GetText ) ) )]"
+				margin = { 0 20 }
+				spacing = 20
+
+				background = {
+					using = Background_Area
+				}
+
+				text_multi = {
+					name = "description"
+					autoresize = yes
+					max_width = 430
+					min_width = 430
+					margin = { 20 0 }
+					text = "[ResignConfirmationWindow.GetText]"
+					visible = "[Not( StringIsEmpty( ResignConfirmationWindow.GetText ) )]"
+					using = "Font_Size_Small"
+				}
+
+				hbox = {
+					name = "save_checkbox"
+					spacing = 10
+					margin = { 20 0 }
+					visible = "[And( ResignConfirmationWindow.IsShowSave, Not( IsIronmanEnabled ) )]"
+
+					button_checkbox = {
+						checked = "[Or( ResignConfirmationWindow.ShouldSave, IsIronmanEnabled )]"
+						enabled = "[Not( IsIronmanEnabled )]"
+						onclick = "[ResignConfirmationWindow.ToggleShouldSave]"
+					}
+
+					text_single = {
+						text = "FRONTEND_AUTO_SAVE"
+					}
+
+					expand = {}
+				}
+
+				hbox = {
+					name = "ironman_save_info"
+					spacing = 10
+					margin = { 20 0 }
+
+					visible = "[IsIronmanEnabled]"
+
+					text_single = {
+						text = "FRONTEND_AUTO_SAVE_IRONMAN"
+					}
+
+					expand = {}
+				}
+			}
+
+			button_standard = {
+				name = "menu_button"
+				size = { 230 42 }
+				text = "RESIGN"
+				onclick = "[ResignConfirmationWindow.OnMenu]"
+			}
+
+			button_standard = {
+				name = "descktop_button"
+				size = { 230 42 }
+				text = "EXIT_TO_DESKTOP"
+				onclick = "[ResignConfirmationWindow.OnDesktop]"
+			}
+
+			button_tertiary = {
+				name = "cancel_button"
+				size = { 230 42 }
+				text = "CANCEL"
+				shortcut = "close_window"
+				onclick = [ResignConfirmationWindow.Cancel]
+			}
+		}
+	}
+
+	save_in_progress_widget = {
+		blockoverride "visibility" {
+			visible = "[ResignConfirmationWindow.IsProgress]"
+		}
+	}
+}

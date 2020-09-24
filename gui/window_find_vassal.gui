@@ -1,0 +1,120 @@
+window = {
+	name = "find_vassal_list_window"
+	layer = middle
+	movable = yes
+	allow_outside = yes
+
+	using = title_view_window_side_pop_out
+	# using = Window_Position_CharacterList
+	using = Window_Size_CharacterList
+	using = Window_Background
+	using = Window_Decoration
+
+	datacontext = "[FindVassalListWindow.GetFindVassalList]"
+
+	vbox = {
+		margin = { 40 20 }
+		spacing = 10
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+			
+			blockoverride "header_text"
+			{
+				text = "FIND_VASSAL_HEADER"
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[FindVassalListWindow.Close]"
+			}
+		}
+
+		vbox_character_list = {
+			name = "find_vassal_list"
+			layoutpolicy_vertical = expanding
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "container_implementation" 
+			{
+				fixedgridbox = {
+					addcolumn = 650
+					addrow = 85
+
+					name = "characters_grid"
+					datamodel = "[CharacterSelectionList.GetList]"
+					visible = "[Not(CharacterSelectionList.IsBuildingList)]"
+
+					item = {
+						widget_character_list_item = {
+							size = { 650 90 }
+							text_single = {
+								name = "debug_relevance_score"
+								text = "Relevance: [FindVassalListWindow.GetRelevance( CharacterListItem.Self )]"
+								default_format = "D"
+								visible = "[InDebugMode]"
+
+								tooltipwidget = {
+									widget_value_breakdown_tooltip = {
+										datacontext = "[FindVassalListWindow.GetRelevanceBreakdown( CharacterListItem.GetCharacter )]"
+									}
+								}
+							}
+						}
+					}
+				}
+				blockoverride "scrollbox_empty_visibility"
+                {
+					visible = "[Not(CharacterSelectionList.HasItems)]"
+					layoutpolicy_vertical = expanding
+					text = "CHARACTER_FINDER_NO_MATCH"
+                }
+			}
+		}
+	}
+
+	window_character_filter = {
+		blockoverride "addition_filter" {
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('relation_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('gender_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('adult_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('age_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('dynasty_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('ruler_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('religion_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('culture_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('hook_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('claim_filter')]"
+			}
+		}
+	}
+}

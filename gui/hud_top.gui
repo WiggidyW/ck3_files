@@ -1,0 +1,62 @@
+### IN FRONT TOPBAR
+container = {
+	name = "in_front_topbar"
+	parentanchor = top|hcenter
+	position = { 0 185 }
+	visible = "[InFrontTopBar.ShouldBeVisible]"
+	layer = top
+
+	### AUTOSAVE TEXT
+	container = {
+		visible = "[IsAutoSaving]"
+
+		background = {
+			name = "bg"
+			texture = "gfx/interface/tooltips/tooltip_bg.dds"
+			spriteType = Corneredtiled
+			gfxtype = icongfx
+			spriteborder = { 2 2 }
+			shaderfile = "gfx/FX/pdxgui_default.shader"
+
+		}
+
+		background = {
+			name = "frame"
+			texture = "gfx/interface/tooltips/tooltip_frame.dds"
+			gfxtype = icongfx
+			spriteType = Corneredtiled
+			spriteborder = { 20 20 }
+			shaderfile = "gfx/FX/pdxgui_default.shader"
+
+
+			modify_texture = {
+				name = "overlay"
+				texture = "gfx/interface/tiles/tile_overlay_effect_01.dds"
+				spriteType = Corneredstretched
+				spriteborder = { 0 0 }
+				blend_mode = overlay
+			}
+		}
+
+		flowcontainer = {
+			spacing = 15
+			margin = { 20 15 }
+
+			progressbar = {
+				size = { 44 44 }
+				gfxtype = framedprogressbargfx
+				texture = "gfx/interface/frontend/loading_progress.dds"
+				framesize = { 88 88 }
+				loopinterval = 2.0
+				max = 0
+			}
+
+			text_single = {
+				parentanchor = vcenter
+				text = "AUTOSAVE_IN_PROGRESS"
+				align = nobaseline
+				using = Font_Size_Medium
+			}
+		}
+	}
+}

@@ -1,0 +1,90 @@
+window = {
+	using = editor_window
+	name = "ai_war_coordinator_watch_window"
+	parentanchor = top|left
+	size = { 900 600 }
+	position = { 510 200 }
+	widgetanchor = top|left
+	layer = top
+	
+	button = {
+		using = editor_button
+		name = "close_button"
+		position = { -4 5 }
+		size = { 20 20 }
+		parentanchor = top|right
+		text = "x"
+		align = center|nobaseline
+		onclick = "[AIWarCoordinatorWatchWindow.Close]"
+		shortcut = "close_window"
+	}
+	
+	checkbutton = {
+		using = editor_checkbutton
+		position = { 10 30 }
+		parentanchor = top|left
+		checked = "[AIWarCoordinatorWatchWindow.IsAllAttackersActive]"
+		onclick = "[AIWarCoordinatorWatchWindow.ToggleAllAttackers]"
+	}
+	
+	checkbutton = {
+		using = editor_checkbutton
+		position = { 40 30 }
+		parentanchor = top|left
+		checked = "[AIWarCoordinatorWatchWindow.IsAllDefendersActive]"
+		onclick = "[AIWarCoordinatorWatchWindow.ToggleAllDefenders]"
+	}
+	
+	scrollarea = {
+		position = { 0 50 }
+		size = { 895 545 }
+		scrollbarpolicy_horizontal = always_off
+
+		scrollbar_vertical = {
+			using = editor_vertical_scrollbar
+		}
+
+		scrollwidget = {
+			fixedgridbox = {
+				name = "war_grid"
+				datamodel = "[AIWarCoordinatorWatchWindow.AccessWarInfoItems]"
+				position = { 0 0 }
+				size = { 895 545 }
+				addcolumn = 900
+				addrow = 30
+				maxhorizontalslots = 1
+
+				item = {
+					container = {
+						checkbutton = {
+							using = editor_checkbutton
+							position = { 10 2 }
+							parentanchor = top|left
+							visible = "[WarInfo.HasAttacker]"
+							checked = "[WarInfo.IsAttackerActive]"
+							onclick = "[WarInfo.ToggleAttacker]"
+						}
+						
+						checkbutton = {
+							using = editor_checkbutton
+							position = { 40 2 }
+							parentanchor = top|left
+							visible = "[WarInfo.HasDefender]"
+							checked = "[WarInfo.IsDefenderActive]"
+							onclick = "[WarInfo.ToggleDefender]"
+						}
+						
+						textbox = {
+							position = { 80 0 }
+							size = { 800 20 }
+							fontsize = 14
+							parentanchor = top|left
+							align = left|top
+							text = "[WarInfo.GetWar.GetName]"
+						}
+					}
+				}
+			}
+		}
+	}
+}

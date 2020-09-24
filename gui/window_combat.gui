@@ -1,0 +1,1096 @@
+window = {
+	name = "combat_window"
+	size = { 860 330 }
+	position = { 15 27 }
+	gfxtype = windowgfx
+	parentanchor = bottom|hcenter
+	widgetanchor = bottom|hcenter
+	movable = no
+	layer = top
+
+	state = {
+		name = "phase_change"
+	}
+
+	state = {
+		name = "combat_left_roll"
+	}
+
+	state = {
+		name = "combat_right_roll"
+	}
+
+	state = {
+		name = "daily_tick"
+	}
+
+	state = {
+		name = "new_battle_event"
+	}
+
+	background = {
+		texture = "gfx/interface/tiles/tile_window_background.dds"
+		spriteType = Corneredtiled
+		spriteborder = { 18 0 }
+		margin = { -23 -17 }
+
+		modify_texture = {
+			texture = "gfx/interface/tiles/tile_overlay_effect_02.dds"
+			blend_mode = overlay
+		}
+
+		modify_texture = {
+			texture = "gfx/interface/military_view/battle_window_bg_mask.dds"
+			blend_mode = alphamultiply
+			spriteType = corneredStretched
+			spriteborder_top = 200
+			spriteborder_right = 200
+			spriteborder_left = 200
+		}
+	}
+
+	margin_widget = {
+		size = { 100% 100% }
+		margin = { 23 17 }
+
+		icon = {
+			datacontext = "[CombatWindow.GetCombat.GetProvince.GetTerrain]"
+			size = { 100% 100% }
+			texture = "[Terrain.GetIllustration]"
+
+			modify_texture = {
+				texture = "gfx/interface/military_view/battle_window_illustration_mask.dds"
+				blend_mode = alphamultiply
+				spriteType = corneredStretched
+				spriteborder_top = 200
+				spriteborder_right = 200
+				spriteborder_left = 200
+			}
+		}
+	}
+
+#	widget = {
+#		parentanchor = hcenter
+#		size = { 505 100% }
+#		using = Window_Decoration
+#	}
+
+	icon = {
+		parentanchor = hcenter
+		position = { 0 -12 }
+		texture = "gfx/interface/combat/combat_decoration.dds"
+	}
+
+	flowcontainer = {
+		parentanchor = top|hcenter
+		position = { 0 20 }
+		spacing = 5
+
+		text_label_center = {
+			text = "[CombatWindow.GetName]"
+			max_width = 350
+			fontsize = 25
+			font = TitleFont
+		}
+
+		icon = {
+			name = "terrain"
+			datacontext = "[CombatWindow.GetCombat.GetProvince.GetTerrain]"
+			texture = "[Terrain.GetIcon]"
+			size = { 40 40 }
+			tooltip = "HOLDING_TERRAIN_TOOLTIP"
+		}
+	}
+
+	widget = {
+		parentanchor = center
+		size = { 430 50 }
+
+		hbox = {
+			hbox = {
+				ignoreinvisible = yes
+				margin = { 10 5 }
+
+				background = {
+					using = Background_Area_Dark
+					alpha = 0.7
+				}
+
+				text_single = {
+					visible = "[CombatWindow.IsCombatInPursuitPhase]"
+					text = "[CombatWindow.GetLeftCombatSide.GetPursuingRetreatingLabel]"
+					using = Font_Size_Medium
+					align = nobaseline
+				}
+
+				icon = {
+					name = "left_side_pursuing"
+					visible = "[CombatWindow.IsLeftSideWinning]"
+					texture = "gfx/interface/icons/icon_pursuit.dds"
+					size = { 40 40 }
+				}
+
+				icon = {
+					name = "left_side_fled"
+					visible = "[CombatWindow.IsRightSideWinning]"
+					texture = "gfx/interface/icons/icon_fled.dds"
+					size = { 40 40 }
+				}
+			}
+
+			expand = {}
+
+			text_label_center = {
+				name = "combat_result"
+				visible = "[CombatWindow.IsCombatInPursuitPhase]"
+				text = "[CombatWindow.GetWonLostLabel]"
+				font = TitleFont
+				fontsize = 35
+				align = nobaseline
+				margin_bottom = 0
+			}
+
+			expand = {}
+
+			hbox = {
+				ignoreinvisible = yes
+				margin = { 10 5 }
+
+				background = {
+					using = Background_Area_Dark
+					alpha = 0.7
+				}
+
+				icon = {
+					name = "right_side_pursuing"
+					visible = "[CombatWindow.IsRightSideWinning]"
+					texture = "gfx/interface/icons/icon_pursuit.dds"
+					mirror = horizontal
+					size = { 40 40 }
+				}
+
+				icon = {
+					name = "right_side_fled"
+					visible = "[CombatWindow.IsLeftSideWinning]"
+					texture = "gfx/interface/icons/icon_fled.dds"
+					size = { 40 40 }
+				}
+
+				text_single = {
+					visible = "[CombatWindow.IsCombatInPursuitPhase]"
+					text = "[CombatWindow.GetRightCombatSide.GetPursuingRetreatingLabel]"
+					using = Font_Size_Medium
+					align = nobaseline
+				}
+			}
+		}
+	}
+
+	widget = {
+		parentanchor = bottom|hcenter
+		size = { 100% 0 }
+		allow_outside = yes
+
+		### Commander Left
+		widget = {
+			name = "left_commander"
+			datacontext = "[CombatWindow.GetLeftSideCommander]"
+			parentanchor = left|bottom
+			position = { 15 -30 }
+			allow_outside = yes
+
+			portrait_body = {
+				parentanchor = bottom|left
+				visible = "[Character.IsValid]"
+
+				blockoverride "portrait_button_template_tooltip" {
+					tooltip = "[CombatWindow.GetLeftSideCommanderTooltip]"
+				}
+
+				blockoverride "coa" {}
+				blockoverride "opinion_box" {}
+				blockoverride "status_icons" {}
+			}
+
+			coa_realm_medium_crown = {
+				datacontext = "[CombatWindow.GetLeftSideMainParticipant]"
+				parentanchor = bottom|left
+				position = { 15 -60 }
+				tooltip = "[CombatWindow.GetLeftSideRealmFlagTooltip]"
+			}
+
+			### Left actions
+			container = {
+				visible = "[Character.IsValid]"
+				allow_outside = yes
+				
+				widget = {
+					name = "left_last_action"
+					visible = "[Not(CombatWindow.IsCombatInPursuitPhase)]"
+					parentanchor = bottom|left
+					position = { 135 -140 }
+					scale = 1.4
+					tooltip = "COW_TT_CURRENT_ROLL_LEFT"
+					allow_outside = yes
+	
+					### Commander roll
+					icon = {
+						name = "commander_roll_bg"
+						texture = "gfx/interface/combat/combat_commander_roll_bg.dds"
+	
+						text_single = {
+							parentanchor = center
+							text = "[CombatWindow.GetLeftRoll]"
+							default_format = "#high;glow_color:{0.1,0.1,0.1,1.0}"
+							using = Font_Size_Big
+							align = nobaseline
+						}
+					}
+				}
+			}
+
+			flowcontainer = {
+				name = "martial_value"
+				parentanchor = bottom|left
+				position = { 90 -70 }
+				direction = vertical
+				spacing = -5
+				visible = "[Character.IsValid]"
+				tooltip = "[Character.GetCommanderAdvantageDesc]"
+
+				background = {
+					using = Background_Area_Dark
+				}
+
+				icon = {
+					name = "icon"
+					texture = "gfx/interface/icons/icon_commander_advantage.dds"
+					size = { 40 40 }
+				}
+
+				text_single = {
+					name = "label"
+					parentanchor = hcenter
+					text = "[Character.GetCommanderAdvantage]"
+					default_format = "#high"
+					using = Font_Size_Medium
+					align = nobaseline
+				}
+			}
+
+			flowcontainer = {
+				parentanchor = bottom|left
+				position = { 25 -45 }
+				ignoreinvisible = yes
+
+				text_label_left = {
+					visible = "[CombatWindow.IsAttackerOnLeftSide]"
+					text = "ATTACKER"
+					default_format = "#N"
+				}
+
+				text_label_left = {
+					visible = "[Not(CombatWindow.IsAttackerOnLeftSide)]"
+					text = "DEFENDER"
+					default_format = "#P"
+				}
+			}
+
+			flowcontainer = {
+				datamodel = "[CombatWindow.GetLeftCommanderTraits]"
+				parentanchor = bottom|left
+				position = { 20 5 }
+
+				item = {
+					icon_trait = {
+						blockoverride "icon_size"
+						{
+							size = { 50 50 }
+						}
+					}
+				}
+			}
+		}
+
+		### Commander Right
+		widget = {
+			name = "right_commander"
+			datacontext = "[CombatWindow.GetRightSideCommander]"
+			parentanchor = bottom|right
+			position = { -15 -30 }
+			allow_outside = yes
+
+			portrait_body = {
+				parentanchor = bottom|right
+				visible = "[Character.IsValid]"
+
+				blockoverride "portrait_button_template_tooltip" {
+					tooltip = "[CombatWindow.GetRightSideCommanderTooltip]"
+				}
+				
+				blockoverride "portrait_button"
+				{
+					portrait_scale = { -1 1 }
+					portrait_offset = { 1 0 }
+				}
+				
+				blockoverride "coa" {}
+				blockoverride "opinion_box" {}
+				blockoverride "status_icons" {}
+			}
+
+			coa_realm_medium_crown = {
+				datacontext = "[CombatWindow.GetRightSideMainParticipant]"
+				parentanchor = bottom|right
+				position = { -15 -60 }
+				tooltip = "[CombatWindow.GetRightSideRealmFlagTooltip]"
+			}
+
+			### Right actions
+			container = {
+				visible = "[Character.IsValid]"
+				allow_outside = yes
+
+				widget = {
+					name = "right_last_action"
+					visible = "[Not(CombatWindow.IsCombatInPursuitPhase)]"
+					parentanchor = bottom|right
+					allow_outside = yes
+					position = { -135 -140 }
+					scale = 1.4
+					tooltip = "COW_TT_CURRENT_ROLL_RIGHT"
+	
+					### Commander roll
+					icon = {
+						name = "commander_roll_bg"
+						parentanchor = right
+						texture = "gfx/interface/combat/combat_commander_roll_bg.dds"
+	
+						text_single = {
+							parentanchor = center
+							text = "[CombatWindow.GetRightRoll]"
+							default_format = "#high;glow_color:{0.1,0.1,0.1,1.0}"
+							using = Font_Size_Big
+							align = nobaseline
+						}
+					}
+				}
+			}
+
+			flowcontainer = {
+				name = "martial_value"
+				parentanchor = bottom|right
+				position = { -90 -70 }
+				direction = vertical
+				spacing = -5
+				visible = "[Character.IsValid]"
+				tooltip = "[Character.GetCommanderAdvantageDesc]"
+
+				background = {
+					using = Background_Area_Dark
+				}
+
+				icon = {
+					name = "icon"
+					texture = "gfx/interface/icons/icon_commander_advantage.dds"
+					size = { 40 40 }
+				}
+
+				text_single = {
+					name = "label"
+					parentanchor = hcenter
+					text = "[Character.GetCommanderAdvantage]"
+					default_format = "#high"
+					using = Font_Size_Medium
+					align = nobaseline
+				}
+			}
+
+			flowcontainer = {
+				parentanchor = bottom|right
+				position = { -25 -45 }
+				ignoreinvisible = yes		
+
+				text_label_right = {
+					visible = "[Not(CombatWindow.IsAttackerOnLeftSide)]"
+					text = "ATTACKER"
+					default_format = "#N"
+				}
+
+				text_label_right = {
+					visible = "[CombatWindow.IsAttackerOnLeftSide]"
+					text = "DEFENDER"
+					default_format = "#P"
+				}
+			}
+
+			flowcontainer = {
+				datamodel = "[CombatWindow.GetRightCommanderTraits]"
+				parentanchor = bottom|right
+				position = { -20 5 }
+
+				item = {
+					icon_trait = {
+						blockoverride "icon_size"
+						{
+							size = { 50 50 }
+						}
+					}
+				}
+			}
+		}
+	}
+
+	widget = {
+		name = "combat_progress"
+		visible = "[Not(CombatWindow.IsCombatInPursuitPhase)]"
+		parentanchor = center
+		position = { 0 0 }
+		size = { 490 42 }
+		tooltip = "CV_TT_RELATIVE_SOLDIERS"
+		using = tooltip_above
+
+		progressbar = {
+			name = "power_progressbar"
+			alwaystransparent = yes
+			size = { 100% 100% }
+			progresstexture = "gfx/interface/combat/advantage_bar_me.dds"
+			noprogresstexture = "gfx/interface/combat/advantage_bar_enemy.dds"
+			value = "[CombatWindow.GetCombat.GetPowerSlider]"
+			direction = horizontal
+			parentanchor = top|hcenter
+		}
+
+		icon = {
+			name = "power_bar_frame"
+			size = { 510 60 }
+			alwaystransparent = yes
+			texture = "gfx/interface/combat/advantage_bar_frame.dds"
+			parentanchor = top|hcenter
+			position = { 0 -10 }
+		}
+	}
+
+	### Troop count
+	flowcontainer = {
+		parentanchor = center
+		position = { 0 75 }
+
+		background = {
+			using = Background_Area_Dark
+			margin = { 5 0 }
+			margin_top = -8
+		}
+
+		flowcontainer_combat_soldiers = {
+			name = "left_soldiers"
+			datacontext = "[CombatWindow.GetLeftCombatSide]"
+			datacontext = "[CombatSide.GetComposition]"
+			direction = vertical
+			min_width = 140
+
+			blockoverride "soft_casualties"
+			{
+				flowcontainer = {
+					tooltip = "COW_TT_SOFT_CASUALTIES_LEFT"
+					spacing = 2
+					ignoreinvisible = yes
+
+					icon = {
+						name = "fled_icon_left"
+						size = { 20 20 }
+						texture = "gfx/interface/icons/icon_retreat.dds"
+					}
+
+					text_single = {
+						visible = "[Or( Not(CombatWindow.IsCombatInPursuitPhase), CombatSide.IsStillFighting )]"
+						text = "[CombatWindow.GetLeftCombatSide.GetSoftCasualties|0]"
+						align = nobaseline
+					}
+
+					text_single = {
+						visible = "[And( CombatWindow.IsCombatInPursuitPhase, Not( CombatSide.IsStillFighting ) )]"
+						text = "[CombatWindow.GetLeftCombatSide.GetSoftCasualties|0]"
+						default_format = "#N"
+						align = nobaseline
+					}
+				}
+			}
+
+			text_single = {
+				name = "left_knights"
+				visible = "[GreaterThan_int32( CombatWindow.GetLeftKnightCount, '(int32)0' )]"
+				text = "COW_KNIGHT_COUNT_LEFT"
+				align = nobaseline
+				tooltip = "COW_TT_KNIGHT_COUNT_LEFT"
+			}
+		}
+
+		widget = {
+			size = { 170 100% }
+			allow_outside = yes
+
+			### Retreat
+			tooltip = "[CombatWindow.GetAdvantageDescription]"
+
+			icon = { 
+				position = { 0 70 }
+				widgetanchor = hcenter
+				parentanchor = hcenter
+				texture = "gfx/interface/combat/combat_phases.dds"
+				
+				icon = {
+					position = { 3 3 }
+					texture = "gfx/interface/combat/combat_phases_small.dds"
+					frame = 1
+					framesize = { 30 30 }
+					visible = "[CombatWindow.IsCombatInManeuverPhase]"
+					tooltip = "COMBAT_WINDOW_PHASE_MANEUVER_TT"
+					using = tooltip_ne
+				}
+
+				icon = {
+					position = { 43 4 }
+					texture = "gfx/interface/combat/combat_phases_small.dds"
+					frame = 2
+					framesize = { 30 30 }
+					visible = "[CombatWindow.ShowNoRetreatIcon]"
+					tooltip = "[CombatWindow.GetRetreatTooltip]"
+					using = tooltip_ne
+				}
+
+				icon = {
+					position = { 76 4 }
+					texture = "gfx/interface/combat/combat_phases_small.dds"
+					frame = 3
+					framesize = { 30 30 }
+					visible = "[CombatWindow.ShowRetreatIcon]"
+					tooltip = "[CombatWindow.GetRetreatTooltip]"
+					using = tooltip_ne
+				}
+
+				icon = {
+					position = { 116 4 }
+					texture = "gfx/interface/combat/combat_phases_small.dds"
+					frame = 5
+					framesize = { 30 30 }
+					visible = "[CombatWindow.IsCombatInPursuitPhase]"
+					tooltip = "COMBAT_WINDOW_PHASE_AFTERMATH_TT"
+					using = tooltip_ne
+				}
+			}
+
+		#	container = {
+		#		parentanchor = center
+		#		position = { 30 20 }
+		#
+		#		icon = {
+		#			name = "retreat_icon"
+		#			visible = "[And(CombatWindow.ShowRetreatIcon, CombatWindow.HasPlayer)]"
+		#
+		#			size = { 40 40 }
+		#			texture = "gfx/interface/icons/icon_retreat.dds"
+		#			tooltip = "[CombatWindow.GetRetreatTooltip]"
+		#		}
+		#
+		#		icon = {
+		#			name = "no_retreat_icon"
+		#			visible = "[And(CombatWindow.ShowNoRetreatIcon, CombatWindow.HasPlayer)]"
+		#			parentanchor = top|hcenter
+		#			size = { 40 40 }
+		#			texture = "gfx/interface/icons/icon_no_retreat.dds"
+		#			tooltip = "[CombatWindow.GetRetreatTooltip]"
+		#		}
+		#	}
+		}
+
+		flowcontainer_combat_soldiers = {
+			datacontext = "[CombatWindow.GetRightCombatSide]"
+			datacontext = "[CombatSide.GetComposition]"
+			direction = vertical
+			min_width = 140
+
+			blockoverride "soft_casualties"
+			{
+				flowcontainer = {
+					tooltip = "COW_TT_SOFT_CASUALTIES_RIGHT"
+					spacing = 2
+					ignoreinvisible = yes
+
+					icon = {
+						name = "fled_icon_left"
+						size = { 20 20 }
+						texture = "gfx/interface/icons/icon_retreat.dds"
+					}
+
+					text_single = {
+						visible = "[Or( Not(CombatWindow.IsCombatInPursuitPhase), CombatSide.IsStillFighting )]"
+						text = "[CombatWindow.GetRightCombatSide.GetSoftCasualties|0]"
+						align = nobaseline
+					}
+
+					text_single = {
+						visible = "[And( CombatWindow.IsCombatInPursuitPhase, Not( CombatSide.IsStillFighting ) )]"
+						text = "[CombatWindow.GetRightCombatSide.GetSoftCasualties|0]"
+						default_format = "#N"
+						align = nobaseline
+					}
+				}
+			}
+
+			text_single = {
+				name = "right_knights"
+				visible = "[GreaterThan_int32( CombatWindow.GetRightKnightCount, '(int32)0' )]"
+				text = "COW_KNIGHT_COUNT_RIGHT"
+				align = nobaseline
+				tooltip = "COW_TT_KNIGHT_COUNT_RIGHT"
+			}
+		}
+	}
+
+	text_single = {
+		name = "advantage"
+		visible = "[Not(CombatWindow.IsCombatInPursuitPhase)]"
+		parentanchor = center
+		position = { 0 48 }
+
+		text = "COMBAT_WINDOW_ADVANTAGE"
+		#using = Font_Size_Big
+		size = { 0 34 }
+		fontsize = 32
+		tooltip = "[CombatWindow.GetAdvantageDescription]"
+
+		# animation_attention = {
+		# 	name = "high_positive_advantage"
+		# 	visible = "[GreaterThan_CFixedPoint(CombatWindow.GetAdvantage,'(CFixedPoint)30')]"
+		# }
+
+		# animation_attention = {
+		# 	name = "high_negative_advantage"
+		# 	visible = "[LessThan_CFixedPoint(CombatWindow.GetAdvantage,'(CFixedPoint)-30')]"
+		# }
+	}
+
+	### MAA Info
+	widget = {
+		parentanchor = center
+		position = { 0 -50 }
+		size = { 480 40 }
+
+		text_label_center ={
+			name = "no_maa_text"
+			parentanchor = center
+			text = "COMBAT_WINDOW_NO_MAA"
+			visible = "[And(IsDataModelEmpty(CombatWindow.GetLeftSideMaaTypes), IsDataModelEmpty(CombatWindow.GetRightSideMaaTypes))]"
+		}
+		
+		flowcontainer = {
+			datamodel = "[CombatWindow.GetLeftSideMaaTypes]"
+			datacontext = "[CombatWindow.GetLeftCombatSide]"
+			ignoreinvisible = yes
+			spacing = -2
+
+			background = {
+				using = Background_Area_Dark
+				alpha = 0.7
+				margin = { 5 5 }
+				margin_bottom = 10
+			}	
+			
+			item = {
+				icon = {
+					name = "maa_icon"
+					datacontext = "[CombatMaaItem.GetRegimentType]"
+					texture = "[RegimentType.GetIcon]"
+	
+					block "overlay_size"
+					{
+						size = { 40 40 }
+					}
+	
+					background = {
+						using = Status_Bad
+						visible = "[And(EqualTo_int32(CombatMaaItem.GetPerformance, '(int32)3'), Not(CombatWindow.IsCombatInPursuitPhase))]"
+						margin = { -4 0 }
+					}
+	
+					background = {
+						using = Status_Mixed
+						visible = "[And(EqualTo_int32(CombatMaaItem.GetPerformance, '(int32)2'), Not(CombatWindow.IsCombatInPursuitPhase))]"
+						margin = { -4 0 }
+					}
+	
+					background = {
+						using = Status_Good
+						visible = "[And(EqualTo_int32(CombatMaaItem.GetPerformance, '(int32)1'), Not(CombatWindow.IsCombatInPursuitPhase))]"
+						margin = { -4 0 }
+					}
+	
+					background = {
+						using = Status_Good
+						visible = "[And(CombatWindow.IsCombatInPursuitPhase, CombatMaaItem.IsGoodAftermath(CombatSide.IsStillFighting))]"
+						margin = { -4 0 }
+					}
+	
+					tooltipwidget = {
+						flowcontainer_maa_tooltip = {}
+					}
+					
+					using = tooltip_nw
+				}
+			}
+		}
+
+		flowcontainer = {
+			datamodel = "[CombatWindow.GetRightSideMaaTypes]"
+			datacontext = "[CombatWindow.GetRightCombatSide]"
+			parentanchor = right
+			ignoreinvisible = yes
+			spacing = -2
+
+			background = {
+				using = Background_Area_Dark
+				alpha = 0.7
+				margin = { 5 5 }
+				margin_bottom = 10
+			}
+
+			item = {
+				icon = {
+					name = "maa_icon"
+					datacontext = "[CombatMaaItem.GetRegimentType]"
+					alwaystransparent = yes
+					texture = "[RegimentType.GetIcon]"
+
+					block "overlay_size"
+					{
+						size = { 40 40 }
+					}
+
+					background = {
+						using = Status_Bad
+						visible = "[And(EqualTo_int32(CombatMaaItem.GetPerformance, '(int32)3'), Not(CombatWindow.IsCombatInPursuitPhase))]"
+						margin = { -4 0 }
+					}
+
+					background = {
+						using = Status_Mixed
+						visible = "[And(EqualTo_int32(CombatMaaItem.GetPerformance, '(int32)2'), Not(CombatWindow.IsCombatInPursuitPhase))]"
+						margin = { -4 0 }
+					}
+
+					background = {
+						using = Status_Good
+						visible = "[And(EqualTo_int32(CombatMaaItem.GetPerformance, '(int32)1'), Not(CombatWindow.IsCombatInPursuitPhase))]"
+						margin = { -4 0 }
+					}
+
+					background = {
+						using = Status_Good
+						visible = "[And(CombatWindow.IsCombatInPursuitPhase, CombatMaaItem.IsGoodAftermath(CombatSide.IsStillFighting))]"
+						margin = { -4 0 }
+					}
+
+					tooltipwidget = {
+						flowcontainer_maa_tooltip = {}
+					}
+					using = tooltip_nw
+				}
+			}
+		}
+	}
+
+	### Battle event
+	container = {
+		visible = "[CombatWindow.BattleEventIsShown]"
+		parentanchor = top|hcenter
+		widgetanchor = bottom|hcenter
+		position = { 0 -20 }
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Standard
+			position_y = -20
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Standard
+			position_y = 0
+		}
+
+		button_group = {
+			size = { 100% 100% }
+			onclick = "[CombatWindow.IncrementBattleEvent]"
+
+			background = {
+				using = Background_Area_Dark
+			}
+		}
+
+		flowcontainer = {
+			name = "battle_event"
+			datacontext = "[CombatWindow.GetCurrentBattleEvent]"
+			margin = { 10 10 }
+
+			portrait_head_small = {
+				name = "left_portrait"
+				datacontext = "[BattleEvent.GetLeftCharacter( CombatWindow.GetLeftCombatSide.IsAttacker )]"
+				visible = "[Character.IsValid]"
+
+				blockoverride "opinion_box"	{}
+				blockoverride "coa" {}
+			}
+
+			text_multi = {
+				name = "title"
+				autoresize = yes
+				max_width = 200
+
+				text = "[CombatWindow.GetCurrentBattleEvent.GetTitle( CombatWindow.GetLeftCombatSide.IsAttacker )]"
+			}
+
+			portrait_head_small = {
+				name = "right_portrait"
+				datacontext = "[BattleEvent.GetRightCharacter( CombatWindow.GetLeftCombatSide.IsAttacker )]"
+				visible = "[Character.IsValid]"
+
+				blockoverride "opinion_box" {}
+				blockoverride "coa" {}
+
+				blockoverride "portrait_button"
+				{
+					portrait_scale = { -1 1 }
+					portrait_offset = { 1 0 }
+				}
+			}
+		}
+	}
+
+	widget = {
+		parentanchor = top|right
+		position = { -155 16 }
+		size = { 120 70 }
+		alwaystransparent = no
+	}
+
+	buttons_window_control = {
+		parentanchor = top|right
+		position = { -190 16 }
+
+		blockoverride "button_go_to" {
+			onclick = "[CombatWindow.GoToProvince]"
+			tooltip = "GOTO_PROVINCE_TT"
+		}
+
+		blockoverride "button_close"
+		{
+			onclick = "[CombatWindow.CloseAndDeselect]"
+		}
+	}
+}
+
+types CombatWindow
+{
+	type flowcontainer_combat_soldiers = flowcontainer {
+		direction = vertical
+		margin = { 8 8 }
+		tooltip = "[ArmyComposition.GetArmyCompositionTooltip]"
+
+		flowcontainer = {
+			name = "soldiers"
+			spacing = 5
+
+			icon = {
+				name = "icon_soldier"
+				parentanchor = vcenter
+				texture = "gfx/interface/icons/icon_soldier.dds"
+				size = { 35 35 }
+			}
+
+			flowcontainer = {
+				direction = vertical
+				spacing = -5
+				ignoreinvisible = yes
+
+				text_single = {
+					visible = "[Not(CombatWindow.IsCombatInPursuitPhase)]"
+					text = "[ArmyComposition.GetSoldierCountString]"
+					default_format = "#high"
+					fontsize = 30
+					align = nobaseline
+				}
+
+				text_single = {
+					visible = "[CombatWindow.IsCombatInPursuitPhase]"
+					text = "[CombatSide.GetCurrentFightingMen|0]"
+					fontsize = 30
+					align = nobaseline
+				}
+
+				block "soft_casualties" {}
+			}
+		}
+
+		text_single = {
+			name = "quality_label"
+			text = "[ArmyComposition.GetArmyQualityName]"
+			align = nobaseline
+		}
+	}
+
+	type flowcontainer_maa_tooltip = flowcontainer {
+		direction = vertical
+		alwaystransparent = no
+
+		widget = {
+			name = "background"
+			using = DefaultTooltipBackground
+			size = { 100% 100% }
+			alwaystransparent = no
+		}
+
+		vbox = {
+			margin = { 10 3 }
+			margin_bottom = 10
+			minimumsize = { 380 0 }
+			spacing = 5
+
+			vbox_maa_stats = {
+				layoutpolicy_horizontal = expanding
+				
+				blockoverride "siege_stat"
+				{		
+					text = "COMBAT_REGIMENT_SIEGE"	
+				}
+				blockoverride "siege_tt"
+				{
+					tooltip = "COMBAT_REGIMENT_SIEGE_TT"			
+				}
+				blockoverride "damage_stat"
+				{
+					text = "[CombatMaaItem.GetStat( 'damage' )|0]"					
+				}
+				blockoverride "damage_tt"
+				{
+					tooltip = "COMBAT_REGIMENT_DAMAGE_TT"
+				}
+				blockoverride "toughness_stat"
+				{
+					text = "[CombatMaaItem.GetStat( 'toughness' )|0]"
+				}
+				blockoverride "toughness_tt"
+				{
+					tooltip = "COMBAT_REGIMENT_TOUGHNESS_TT"
+				}
+				blockoverride "pursuit_stat"
+				{
+					text = "[CombatMaaItem.GetStat( 'pursuit' )|0]"
+				}
+				blockoverride "pursuit_tt"
+				{
+					tooltip = "COMBAT_REGIMENT_PURSUIT_TT"
+					# fade out if 0
+					alpha = "[Select_float(GreaterThan_CFixedPoint(CombatMaaItem.GetStat( 'pursuit' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4'))]"
+				}
+				blockoverride "screen_stat"
+				{
+					text = "[CombatMaaItem.GetStat( 'screen' )|0]"
+				}
+				blockoverride "screen_tt"
+				{
+					tooltip = "COMBAT_REGIMENT_SCREEN_TT"
+					# fade out if 0
+					alpha = "[Select_float(GreaterThan_CFixedPoint(CombatMaaItem.GetStat( 'screen' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4'))]"
+				}				
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 10 0 }
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "[CombatMaaItem.GetCurrentStrength|0]/[CombatMaaItem.GetMaxStrength]"
+				}
+
+				text_single = {
+					text = "COMBAT_WINDOW_MAA_TT_REGIMENTS"
+				}
+			}
+
+
+
+			text_single = {
+				margin = { 10 0 }
+				layoutpolicy_horizontal = expanding
+				visible = "[And(Not(CombatWindow.IsCombatInPursuitPhase), GreaterThan_int32(CombatMaaItem.GetTerrainBonus, '(int32)0'))]"
+				text = "COMBAT_WINDOW_MAA_TT_TERRAIN_GOOD"
+			}
+
+
+			text_single = {
+				margin = { 10 0 }
+				layoutpolicy_horizontal = expanding
+				visible = "[And(Not(CombatWindow.IsCombatInPursuitPhase), LessThan_int32(CombatMaaItem.GetTerrainBonus, '(int32)0'))]"
+				text = "COMBAT_WINDOW_MAA_TT_TERRAIN_BAD"
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				text_single = {
+					margin = { 6 0 }
+					layoutpolicy_horizontal = expanding
+					visible = "[And(Not(CombatWindow.IsCombatInPursuitPhase), LessThan_CFixedPoint(CombatMaaItem.GetCountered, '(CFixedPoint)1'))]"
+					text = "COMBAT_WINDOW_MAA_TT_EFFICIENCY"
+				}
+				
+				flowcontainer = {
+					layoutpolicy_horizontal = expanding
+					visible = "[And( DataModelHasItems(CombatMaaItem.GetCounteredByMaa), Not( CombatWindow.IsCombatInPursuitPhase ) )]"
+					margin = { 10 0 }
+					margin_left = 30
+					direction = vertical
+					datamodel = "[CombatMaaItem.GetCounteredByMaa]"
+
+					item = {
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							text = "COMBAT_WINDOW_MAA_TT_COUNTERED_BY"
+						}
+					}
+				}			
+			}
+			flowcontainer = {
+				layoutpolicy_horizontal = expanding
+				visible = "[And( DataModelHasItems(CombatMaaItem.GetCountersMaa), Not( CombatWindow.IsCombatInPursuitPhase ) )]"
+				margin = { 10 0 }
+				direction = vertical
+				datamodel = "[CombatMaaItem.GetCountersMaa]"
+
+				item = {
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "COMBAT_WINDOW_MAA_TT_COUNTERS"
+					}
+				}
+			}
+
+			text_single = {
+				margin = { 10 0 }
+				layoutpolicy_horizontal = expanding
+				visible = "[And(And(CombatWindow.IsCombatInPursuitPhase, GreaterThan_CFixedPoint(RegimentType.GetStat(GetPlayer, 'screen'), '(CFixedPoint)0')), Not( CombatSide.IsStillFighting ) )]"
+				text = "COMBAT_WINDOW_MAA_TT_SCREEN"
+			}
+
+			text_single = {
+				margin = { 10 0 }
+				layoutpolicy_horizontal = expanding
+				visible = "[And( And(CombatWindow.IsCombatInPursuitPhase, GreaterThan_CFixedPoint(RegimentType.GetStat(GetPlayer, 'pursuit'), '(CFixedPoint)0')), CombatSide.IsStillFighting )]"
+				text = "COMBAT_WINDOW_MAA_TT_PURSUIT"
+			}
+
+			
+		}
+	}
+}

@@ -1,0 +1,105 @@
+# Event window widget to rename a child (intended to be used at birth)
+# Required controller: name_character
+
+types EventWindowWidgetNameChild
+{
+	type event_widget_name_child_option = button_standard_list {
+		layoutpolicy_horizontal = expanding
+		size = { -1 34 }
+		using = Font_Size_Small
+		background = {
+			using = Background_Area
+		}
+
+		buttonText = {
+			text_single = {
+				size = { 100% 100% }
+				autoresize = no
+				margin = { 10 0 }
+				align = center|nobaseline
+				default_format = "#clickable"
+			}
+		}
+	}
+}
+
+vbox = {
+	name = "event_window_widget_name_child"
+	layoutpolicy_horizontal = expanding
+	minimumsize = { 240 -1 }
+	ignoreinvisible = yes
+	margin = { 5 0 }
+	margin_bottom = 10
+	spacing = 3
+
+	datacontext = "[EventWindowWidgetNameCharacter.GetCharacter]"
+
+	editbox = {
+		size = { 240 30 }
+		alwaystransparent = no
+		using = Font_Type_Standard
+		using = Font_Size_Small
+		default_format = "#high"
+		align = nobaseline
+		margin_left = 5
+
+		text = "[EventWindowWidgetNameCharacter.GetCurrentName]"
+		ontextedited = "[EventWindowWidgetNameCharacter.OnEditCurrentName]"
+
+		using = Background_Area_Border
+		background = {
+			using = Background_Area
+		}
+	}
+
+	event_widget_name_child_option = {
+		visible = "[And( Not( Character.IsFemale ), Character.GetFather.IsValid )]"
+		text = "event_window_widget_name_child_after_father"
+		onclick = "[EventWindowWidgetNameCharacter.SetCurrentName( Character.GetFather.GetFirstNameBase )]"
+	}
+
+	event_widget_name_child_option = {
+		visible = "[And( Character.IsFemale, Character.GetMother.IsValid )]"
+		text = "event_window_widget_name_child_after_mother"
+		onclick = "[EventWindowWidgetNameCharacter.SetCurrentName( Character.GetMother.GetFirstNameBase )]"
+	}
+
+	event_widget_name_child_option = {
+		visible = "[And( Not( Character.IsFemale ), Character.GetFather.GetFather.IsValid )]"
+		text = "event_window_widget_name_child_after_fathers_father"
+		onclick = "[EventWindowWidgetNameCharacter.SetCurrentName( Character.GetFather.GetFather.GetFirstNameBase )]"
+	}
+
+	event_widget_name_child_option = {
+		visible = "[And( Character.IsFemale, Character.GetFather.GetMother.IsValid )]"
+		text = "event_window_widget_name_child_after_fathers_mother"
+		onclick = "[EventWindowWidgetNameCharacter.SetCurrentName( Character.GetFather.GetMother.GetFirstNameBase )]"
+	}
+
+	event_widget_name_child_option = {
+		visible = "[And( Not( Character.IsFemale ), Character.GetMother.GetFather.IsValid )]"
+		text = "event_window_widget_name_child_after_mothers_father"
+		onclick = "[EventWindowWidgetNameCharacter.SetCurrentName( Character.GetMother.GetFather.GetFirstNameBase )]"
+	}
+	event_widget_name_child_option = {
+		visible = "[And( Character.IsFemale, Character.GetMother.GetMother.IsValid )]"
+		text = "event_window_widget_name_child_after_mothers_mother"
+		onclick = "[EventWindowWidgetNameCharacter.SetCurrentName( Character.GetMother.GetMother.GetFirstNameBase )]"
+	}
+
+	event_widget_name_child_option = {
+		text = "event_window_widget_name_child_after_random_ancestor"
+		onclick = "[EventWindowWidgetNameCharacter.SetCurrentName( EventWindowWidgetNameCharacter.GetRandomAvailableAncestorName )]"
+	}
+
+	event_widget_name_child_option = {
+		text = "event_window_widget_name_child_random_faith_name"
+		visible = "[Character.GetFaith.HasReservedNames( Character.IsFemale )]"
+		onclick = "[EventWindowWidgetNameCharacter.SetCurrentName( EventWindowWidgetNameCharacter.GetRandomAvailableFaithName )]"
+	}
+
+	event_widget_name_child_option = {
+		text = "event_window_widget_name_child_random_cultural_name"
+		onclick = "[EventWindowWidgetNameCharacter.SetCurrentName( EventWindowWidgetNameCharacter.GetRandomAvailableCultureName )]"
+	}
+}

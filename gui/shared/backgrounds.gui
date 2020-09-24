@@ -1,0 +1,488 @@
+
+######################################################
+################ BACKGROUND TEMPLATES ################
+######################################################
+
+# Background fade to put behind popup windows
+template Background_Fade
+{
+    widget = {
+        visible = "[Not(GameIsMultiplayer)]"
+        size = { 100% 100% }
+
+        icon = {
+            parentanchor = center
+            size = { 50% 50% }
+            alwaystransparent = yes
+            texture = "gfx/interface/temp/temp_bg_event_window_fade.dds"
+            alpha = 0
+
+            state = {
+                name = appear
+                trigger_on_create = yes
+                delay = 0.2
+                using = Animation_Curve_Default
+                alpha = 0.6
+                duration = 0.8
+            }
+
+            state = {
+                name = _hide
+                using = Animation_Curve_Default
+                duration = 3
+                alpha = 0
+            }
+        }
+    }
+}
+
+# Background box
+template Background_Area
+{
+    texture = "gfx/interface/components_masks/mask_rough_edges.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 20 20 }
+    color = { 0 0 0 0.2 }
+    texture_density = 2
+}
+
+## Same as above, but more opaque
+template Background_Area_Dark
+{
+    texture = "gfx/interface/components_masks/mask_rough_edges.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 20 20 }
+    color = { 0 0 0 0.6 }
+    texture_density = 2
+}
+
+template Background_Area_Solid
+{
+    texture = "gfx/interface/components_masks/mask_rough_edges.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 20 20 }
+    color = { 0.06 0.07 0.077 0.9 }
+    texture_density = 2
+}
+
+template Background_Area_Extra_Solid
+{
+    texture = "gfx/interface/components_masks/mask_rough_edges.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 20 20 }
+    color = { 0.06 0.07 0.077 0.99 }
+    texture_density = 2
+}
+
+template Background_Area_Light
+{
+    texture = "gfx/interface/tiles/background_area_light.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 15 15 }
+
+    modify_texture = {
+        name = "overlay"
+        texture = "gfx/interface/tiles/tile_overlay_effect_02.dds"
+        spriteType = Corneredstretched
+        blend_mode = overlay
+        #alpha = 0.
+    }
+}
+
+## Same as above, but more opaque
+template Background_Area_Dark_Border
+{
+    gfxtype = icongfx
+    shaderfile = "gfx/FX/pdxgui_default.shader"
+    texture = "gfx/interface/tiles/tile_frame_thin_03.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 50 50 }
+}
+
+## Background box with dark header
+template Background_Area_With_Header
+{
+    gfxtype = icongfx
+    shaderfile = "gfx/FX/pdxgui_default.shader"
+    texture = "gfx/interface/tiles/tile_frame_thin_01_title.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 50 50 }
+}
+
+## Same as above, but more opaque
+template Background_Area_With_Header_Dark
+{
+    gfxtype = icongfx
+    shaderfile = "gfx/FX/pdxgui_default.shader"
+    texture = "gfx/interface/tiles/tile_frame_thin_02_title.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 50 50 }
+}
+
+### Font label background
+template Text_Label_Background
+{
+    texture = "gfx/interface/tiles/tile_title_bg_01.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 40 8 }
+}
+
+### Clean background with stroked border
+template Background_Area_Border
+{
+    texture = "gfx/interface/tiles/tile_dark_area_01.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 16 16 }
+}
+
+template Background_Area_Border_Solid
+{
+    texture = "gfx/interface/tiles/tile_dark_area_02.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 16 16 }
+}
+
+template Background_Area_Characterlist
+{
+    texture = "gfx/interface/tiles/tile_bg_characterlist.dds"
+    spriteType = Corneredstretched
+    spriteborder = { 5 5 }
+}
+
+# Black border that matches the tab gfx
+template Background_Tab_Area
+{
+    texture = "gfx/interface/tiles/border_tab.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 10 10 }
+}
+
+template Background_Bottom_Fade
+{
+    texture = "gfx/interface/tiles/stretch_bottom_fade.dds"
+    alpha = 0.75
+    # margin_bottom = -5
+}
+
+template Background_Title
+{
+    texture = "gfx/interface/tiles/tile_title_bg_01.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 40 8 }
+
+    modify_texture = {
+        name = "mask"
+        texture = "gfx/interface/tiles/tile_fade_mask_2.dds"
+        spriteType = Corneredstretched
+        spriteborder = { 0 0 }
+        blend_mode = alphamultiply
+    }
+}
+
+template Background_Frame
+{
+    texture = "gfx/interface/buttons/background_frame.dds"
+    spriteType = Corneredstretched
+    spriteborder = { 10 10 }
+    color = { 0.9 0.9 0.9 0.15 }
+}
+
+template Background_Button_Illustration
+{
+    texture = "gfx/interface/tiles/alpha_white.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 50 50 }
+    color = { 0 0 0 0.6 }
+}
+
+template Background_Guest
+{
+    background = {
+        texture = "gfx/interface/buttons/background_pattern.dds"
+        spriteType = Corneredtiled
+        color = { 0.5 0.5 0.6 0.3 }
+
+        modify_texture = {
+            texture = "gfx/interface/buttons/background_button_fade.dds"
+            blend_mode = alphamultiply
+            alpha = 0.9
+        }
+
+        modify_texture = {
+            texture = "gfx/interface/buttons/background_alpha.dds"
+            spriteType = Corneredtiled
+            spriteborder = { 15 15 }
+            blend_mode = alphamultiply
+        }
+        block "Background_Guest_pattern_visible"
+        {
+            visible = "[Character.IsGuest]"
+        }
+    }
+
+    background = {
+        texture = "gfx/interface/buttons/background_frame.dds"
+        spriteborder = { 15 15 }
+        color = { 0.5 0.5 0.6 0.3 }
+        block "Background_Guest_frame_visible"
+        {
+            visible = "[Character.IsGuest]"
+        }
+    }
+}
+
+template Background_Knight
+{
+    visible = "[And(Character.IsKnight, Character.IsValid)]"
+    texture = "gfx/interface/buttons/background_pattern.dds"
+    spriteType = Corneredtiled
+    color = { 0.7 0.4 0.3 0.7 }
+
+    modify_texture = {
+        texture = "gfx/interface/buttons/background_button_fade.dds"
+        blend_mode = alphamultiply
+    }
+
+    modify_texture = {
+        texture = "gfx/interface/buttons/background_overlay.dds"
+        blend_mode = alphamultiply
+    }
+}
+
+template Background_Label
+{
+    texture = "gfx/interface/tiles/tile_title_bg_01.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 40 8 }
+
+    modify_texture = {
+        name = "mask"
+        texture = "gfx/interface/tiles/tile_fade_mask.dds"
+        spriteType = Corneredstretched
+        spriteborder = { 0 0 }
+        blend_mode = alphamultiply
+    }
+}
+
+template Background_Label_Center
+{
+    texture = "gfx/interface/tiles/tile_title_bg_01.dds"
+    spriteType = Corneredtiled
+    spriteborder = { 40 8 }
+
+    modify_texture = {
+        name = "mask"
+        texture = "gfx/interface/tiles/tile_fade_mask_2.dds"
+        spriteType = Corneredstretched
+        spriteborder = { 0 0 }
+        blend_mode = alphamultiply
+    }
+}
+
+### Packaged backgrounds ###
+
+template Background_Vignette_Button
+{
+    background = {
+        texture = "gfx/interface/tiles/tile_vignette_3px.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 5 5 }
+        margin = { -2 -2 }
+    }
+}
+
+template Background_Inset
+{
+    background = {
+        texture = "gfx/interface/tiles/tile_frame_thin_01.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 50 50 }
+        shaderfile = "gfx/FX/pdxgui_default.shader"
+    }
+
+    background = {
+        name = "scrollbar_fade"
+        texture = "gfx/interface/tiles/scrollbar_fade.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 0 30 }
+        shaderfile = "gfx/FX/pdxgui_default.shader"
+    }
+}
+
+template Background_Letter
+{
+    background = {
+        name = "paper_texture_shadow"
+        texture = "gfx/interface/event_window/tile_letter_shadow.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 200 200 }
+    }
+
+    background = {
+        name = "paper_texture_flat"
+        texture = "gfx/interface/event_window/tile_letter_flat.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 200 200 }
+
+        modify_texture = {
+            name = "paper_texture_overlay"
+            texture = "gfx/interface/event_window/overlay_letter_texture.dds"
+            spriteType = Corneredstretched
+            blend_mode = overlay
+        }
+
+        # modify_texture = {
+        #     name = "paper_texture_overlay"
+        #     texture = "gfx/interface/event_window/overlay_letter_texture_02.dds"
+        #     spriteType = Corneredstretched
+        #     blend_mode = overlay
+        # }
+    }
+
+    # background = {
+    #     name = "paper_texture_overlay"
+    #     texture = "gfx/interface/event_window/overlay_letter_texture.dds"
+    #     spriteType = Corneredstretched
+    #     # blend_mode = overlay
+    # }
+}
+
+template Background_Inset_Bottom
+{
+    # background = {
+    #     texture = "gfx/interface/tiles/tile_frame_thin_01.dds"
+    #     spriteType = Corneredtiled
+    #     spriteborder = { 50 50 }
+    #     shaderfile = "gfx/FX/pdxgui_default.shader"
+    # }
+
+    background = {
+        name = "scrollbar_fade"
+        texture = "gfx/interface/tiles/scrollbar_fade_bottom.dds"
+        spriteType = Corneredtiled
+        spriteborder_bottom = 20
+        shaderfile = "gfx/FX/pdxgui_default.shader"
+    }
+}
+
+### Background for tooltips
+template Background_Tooltip
+{
+    background = {
+        name = "background"
+        texture = "gfx/interface/tooltips/tooltip_bg.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 3 3 }
+
+        block "background_color" {}
+
+        modify_texture = {
+            texture = "gfx/interface/tiles/tile_overlay_effect_01.dds"
+            blend_mode = overlay
+        }
+    }
+
+    background = {
+        name = "tooltip_frame"
+        texture = "gfx/interface/tooltips/tooltip_frame.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 20 20 }
+
+        modify_texture = {
+            name = "overlay"
+            texture = "gfx/interface/tiles/tile_overlay_effect_01.dds"
+            blend_mode = overlay
+        }
+    }
+
+    # background = {
+    #     name = "tooltip_frame_locked"
+    #     texture = "gfx/interface/tooltips/tooltip_frame_locked.dds"
+    #     spriteType = Corneredtiled
+    #     spriteborder = { 20 20 }
+    #     tintcolor = "[TooltipInfo.GetTintColor]"
+
+    #     modify_texture = {
+    #         name = "overlay"
+    #         texture = "gfx/interface/tiles/tile_overlay_effect_01.dds"
+    #         blend_mode = overlay
+    #     }
+    # }
+}
+
+template Background_DropDown
+{
+	background = {
+		using = Background_Area_Extra_Solid
+		margin = { 2 6 }
+	}
+}
+
+template Background_Subwindow
+{
+    background = {
+        name = "background"
+        texture = "gfx/interface/tiles/tile_window_background_no_edge.dds"
+
+
+        spriteType = Corneredtiled
+        spriteborder = { 5 5 }
+
+        block "background_color" {
+            color = { 1.77 1.77 1.80 1 }
+        }
+
+        modify_texture = {
+            texture = "gfx/interface/tiles/tile_overlay_effect_01.dds"
+            blend_mode = overlay
+        }
+    }
+
+    background = {
+        name = "tooltip_frame"
+        texture = "gfx/interface/tooltips/tooltip_frame.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 20 20 }
+
+        color = { 1.77 1.77 1.80 1 }
+
+        modify_texture = {
+            name = "overlay"
+            texture = "gfx/interface/tiles/tile_overlay_effect_01.dds"
+            blend_mode = overlay
+        }
+    }
+}
+
+template Background_Popup
+{
+    background = {
+        texture = "gfx/interface/tiles/tile_bg_popup.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 80 80 }
+        margin = { 2 2 }
+        shaderfile = "gfx/FX/pdxgui_default.shader"
+
+        modify_texture = {
+            name = "overlay"
+            texture = "gfx/interface/tiles/tile_overlay_effect_01.dds"
+            spriteType = Corneredstretched
+            spriteborder = { 0 0 }
+            blend_mode = overlay
+        }
+    }
+}
+
+### Masks
+
+# Standard rough edges for illustrations
+template Mask_Rough_Edges
+{
+    modify_texture = {
+        texture = "gfx/interface/components_masks/mask_rough_edges.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 20 20 }
+        blend_mode = alphamultiply
+        texture_density = 2
+    }
+}

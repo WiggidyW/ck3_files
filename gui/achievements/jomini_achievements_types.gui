@@ -1,0 +1,375 @@
+types Achievements
+{
+	type jomini_achievement_window_type = window {
+		name = "achievements_window"
+		parentanchor = center
+		size = { 700 880 }
+		minimumsize = { 450 100 }
+		movable = no
+		resizable = no
+		using = Window_Background
+		using = Window_Decoration_Spike
+		layer = confirmation
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+		}
+
+		### vbox for all windowcontent ###
+		vbox = {
+			alwaystransparent = yes
+			using = Window_Margins
+			datacontext = "[GetGameRules]"
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text" {
+					text = "ACHIEVEMENTS"
+				}
+
+				blockoverride "button_close"
+				{
+					onclick = "[AchievementWindow.Hide]"
+					shortcut = "close_window"
+				}
+			}
+
+			ironman_achievements_info_hbox = {
+				name = "ironman_and_achievements_info"
+				margin = { 0 5 }
+				layoutpolicy_horizontal = expanding
+				visible = "[Not( GameIsMultiplayer )]"
+			}
+
+			spacer = { 
+				size = { 10 15 }
+			}
+
+			block "content"
+			{
+			}
+		}
+	}
+
+	type achievement_group = flowcontainer {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		direction = vertical
+		ignoreinvisible = yes
+		margin = { 10 0 }
+		margin_top = 10
+
+		spacing = 5
+		block "achievements_group"
+		{}
+
+		widget = {
+			size = { 585 25 }
+			layoutpolicy_horizontal = expanding
+			
+			background = {
+				using = Background_Area
+				margin = { 0 5 }
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				ignoreinvisible = yes
+				margin = { 10 0 }
+				spacing = 10
+
+				button_expand = {
+					visible = "[Group.IsCollapsed]"
+					onclick = "[Group.ToggleCollapsed]"
+					down = "[Not(Group.IsCollapsed)]"
+				}
+
+				button_expand = {
+					visible = "[Not(Group.IsCollapsed)]"
+					onclick = "[Group.ToggleCollapsed]"
+					down = "[Not(Group.IsCollapsed)]"
+					gfxtype = togglepushbuttongfx
+				}
+
+				text_single = {
+					text = "ACHIEVEMENT_GROUP_TITLE"
+					default_format = "#low"
+					align = nobaseline
+					tooltip = "ACHIEVEMENT_GROUP_TOOLTIP"
+				}
+
+				expand = {}
+			}
+		}
+
+		dynamicgridbox = {
+			flipdirection = no
+			alwaystransparent = no
+			datamodel = "[Group.AccessVisibleAchievements]"
+			visible = "[Not(Group.IsCollapsed)]"
+			block "achievements_group_gridbox"
+			{}
+			
+			item = {
+				achievement_list_entry = {}
+			}
+		}
+	}
+
+	type achievement_list_entry = widget {
+		minimumsize = { 580 76 }
+		layoutpolicy_vertical = expanding
+		layoutpolicy_horizontal = expanding
+		visible = yes
+		block "achievement_entry"
+		{}
+
+		vbox = {
+			resizeparent = yes
+			
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				spacing = 10
+				margin = { 0 5 }
+	
+				# background = {
+				# 	using = Background_Area
+				# }
+	
+				### IMAGE ####
+				widget = {
+					layoutpolicy_vertical = expanding
+					ignoreinvisible = yes
+					size = { 70 70 }
+	
+					icon = {
+						visible = "[GUIAchievement.GetAchievement.IsUnlocked]"
+						texture = "[GUIAchievement.AccessTexture]"
+						size = { 64 64 }
+						alpha = "[Select_float(GUIAchievement.GetAchievement.IsUnlocked,'(float)1.0','(float)0.5')]"
+						tooltip = "ACHIEVEMENT_UNLOCKED"
+						block "achievement_icon"
+						{}
+					}
+	
+					#### LOCKED
+					highlight_icon = {
+						visible = "[Not(GUIAchievement.GetAchievement.IsUnlocked)]"
+						texture = "[GUIAchievement.AccessTexture]"
+						size = { 64 64 }
+						alpha = "[Select_float(GUIAchievement.GetAchievement.IsUnlocked,'(float)1.0','(float)0.5')]"
+						tooltip = "ACHIEVEMENT_LOCKED"
+	
+						effectname = "GreyedOut"
+	
+						highlight_icon = {
+							size = { 96% 97% }
+							parentanchor = center
+							texture = "gfx/interface/tiles/tile_frame_horizontal_mask.dds"
+							tintcolor = { 0 0 0 0.6 }
+						}
+					}
+	
+					##### IS NOT POSSIBLE
+					highlight_icon = {
+						visible = "[Not(GUIAchievement.IsPossible)]"
+						texture = "[GUIAchievement.AccessTexture]"
+						size = { 64 64 }
+						alpha = "[Select_float(GUIAchievement.GetAchievement.IsUnlocked,'(float)1.0','(float)0.5')]"
+						tooltip = "ACHIEVEMENT_NOT_POSSIBLE"
+	
+						effectname = "GreyedOut"
+					}
+	
+					expand = {}
+				}
+	
+				##TEXT###
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+	
+					text_single = {
+						text = "[GUIAchievement.GetName]"
+						alpha = "[Select_float(GUIAchievement.GetAchievement.IsUnlocked,'(float)1.0','(float)0.5')]"
+						tooltip = "[GUIAchievement.GetHappenedDescription]"
+						default_format = "#high"
+						autoresize = no
+						layoutpolicy_horizontal = expanding
+						minimumsize = { -1 16 }
+						align = vcenter|left
+						block "achievement_name"
+						{}
+					}
+	
+					hbox = {
+						layoutpolicy_horizontal = expanding
+	
+						text_multi = {
+							text = "[GUIAchievement.GetDescription]"
+							autoresize = yes
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							elide = right
+							max_width = 460
+							alpha = "[Select_float(GUIAchievement.GetAchievement.IsUnlocked,'(float)1.0','(float)0.5')]"
+							tooltip = "[GUIAchievement.GetHappenedDescription]"
+							block "achievement_description"
+							{}
+						}
+	
+						expand = {}
+					}
+				}
+			}
+
+			divider_light = {
+				layoutpolicy_horizontal = expanding
+				size = { -1 3 }
+	
+			}
+		}
+	}
+
+	type jomini_achievement_window = jomini_achievement_window_type {
+
+		blockoverride "content" {
+			hbox = {
+				expand = {
+					layoutpolicy_horizontal = expanding
+				}
+
+				button_standard_list = {
+					text = "ACHIEVEMENT_FILTER_ALL"
+					layoutpolicy_horizontal = expanding
+					tooltip = "ACHIEVEMENT_FILTER_ALL_TOOLTIP"
+
+					gfxtype = togglepushbuttongfx
+					down = "[AchievementWindow.ShouldShowAll]"
+					onclick = "[AchievementWindow.ToggleFilterAll]"
+				}
+
+				expand = {
+					layoutpolicy_horizontal = expanding
+				}
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				block "filter_locked_hbox"
+				{}
+				margin = { 0 10 }
+				spacing = 5
+
+				expand = {
+					layoutpolicy_horizontal = expanding
+				}
+
+				button_standard_list = {
+					text = "ACHIEVEMENT_FILTER_UNLOCKED"
+					layoutpolicy_horizontal = expanding
+					tooltip = "ACHIEVEMENT_FILTER_UNLOCKED_TOOLTIP"
+
+					gfxtype = togglepushbuttongfx
+					down = "[AchievementWindow.ShouldShowUnlocked]"
+					onclick = "[AchievementWindow.ToggleFilterUnlocked]"
+				}
+
+				button_standard_list = {
+					text = "ACHIEVEMENT_FILTER_LOCKED"
+					layoutpolicy_horizontal = expanding
+					visible = "[Not( AchievementWindow.HasGameStarted )]"
+					tooltip = "ACHIEVEMENT_FILTER_LOCKED_TOOLTIP"
+
+					gfxtype = togglepushbuttongfx
+					down = "[AchievementWindow.ShouldShowLocked]"
+					onclick = "[AchievementWindow.ToggleFilterLocked]"
+				}
+
+				button_standard_list = {
+					text = "ACHIEVEMENT_FILTER_POSSIBLE"
+					layoutpolicy_horizontal = expanding
+					visible = "[AchievementWindow.HasGameStarted]"
+					tooltip = "ACHIEVEMENT_FILTER_POSSIBLE_TOOLTIP"
+
+					gfxtype = togglepushbuttongfx
+					down = "[AchievementWindow.ShouldShowPossible]"
+					onclick = "[AchievementWindow.ToggleFilterPossible]"
+				}
+
+				expand = {
+					layoutpolicy_horizontal = expanding
+				}
+			}
+
+			### CONTENT ###
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				alwaystransparent = yes
+
+				scrollbox = {
+					alwaystransparent = yes
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					focuspolicy = all
+					scrollbaralign_vertical = right
+					scrollbarpolicy_vertical = as_needed
+					scrollbarpolicy_horizontal = always_off
+					autoresizeviewport = yes
+					autoresizescrollarea = no
+
+					block "groups_scrollarea"
+					{}
+
+					scrollwidget = {
+						dynamicgridbox = {
+							flipdirection = no
+							alwaystransparent = no
+							datamodel = "[AchievementWindow.AccessGroups]"
+							setitemsizefromcell = no
+							block "groups_gridbox"
+							{}
+
+							item = {
+								achievement_group = {}
+							}
+						}
+					}
+
+					scrollbar_vertical = {
+						block "achievements_vertical_scrollbar"
+						{
+							using = Scrollbar_Vertical
+						}
+					}
+
+					scrollbar_horizontal = {
+						block "achievements_horizontal_scrollbar"
+						{
+							using = Scrollbar_Horizontal
+						}
+					}
+				}
+			}
+
+			hbox = {
+				margin = { 0 10 }
+
+				button_primary = {
+					text = "CLOSE_LABEL"
+					onclick = "[AchievementWindow.Hide]"
+					shortcut = "close_window"
+				}
+			}
+		}
+	}
+}

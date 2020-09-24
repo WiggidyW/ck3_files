@@ -1,0 +1,111 @@
+window = {
+	name = "kill_list"
+	layer = middle
+	movable = yes
+	allow_outside = yes
+
+	using = Window_Position_CharacterList
+	using = Window_Size_CharacterList
+	using = Window_Background
+	using = Window_Decoration
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+	}
+
+	datacontext = "[KillListWindow.GetKills]"
+
+	vbox = {
+		margin = { 40 20 }
+		spacing = 10
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+			
+			blockoverride "header_text"
+			{
+				text = "KILL_LIST"
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[KillListWindow.Close]"
+			}
+		}
+
+		text_single = {
+			name = "kill_list_label"
+			text = "KILL_LIST_LABEL"
+			using = Font_Size_Medium
+		}
+
+		vbox_character_list = {
+			layoutpolicy_vertical = expanding
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "button"
+			{
+		        state = {
+		            name = _mouse_enter
+		            on_start = "[Character.OnMouseEnter]"
+		        }
+		        state = {
+		            name = _mouse_leave
+		            on_start = "[Character.OnMouseLeave]"
+		        }
+			}
+
+			blockoverride "item_size" {
+            	size = { 650 150 }
+            	layoutpolicy_horizontal = expanding
+            }
+
+            # The death tooltip is quite chonky so hide this, we don't really care about the relation here you can just click them to find out anything interesting
+			blockoverride "character_relation"
+			{
+				expand = {}
+			}
+
+			blockoverride "dead_icon" {} # All of them are dead we don't need a special extra icon really
+		}
+	}
+
+	window_character_filter = {
+		blockoverride "addition_filter" {
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('gender_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('adult_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('age_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('dynasty_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('ruler_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('religion_filter')]"
+			}
+			filter_item = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetFilter('culture_filter')]"
+			}
+		}
+	}
+}

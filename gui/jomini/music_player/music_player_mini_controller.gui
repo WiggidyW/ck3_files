@@ -1,0 +1,39 @@
+types Jomini
+{
+	type jomini_music_player_mini_controller = widget
+	{
+		size = { 100 30 }
+		button = {
+			name = "music_toggle_player_button"
+			using = "JominiButton"
+			size = { 30 30 }
+			position = { 0 0 }
+			text = "M"
+			tooltip = "MUSIC_PLAYER_OPEN_PLAYER"
+			onclick = "[OnToggleMusicPlayer]"
+			
+		}
+
+		button = {
+			name = "music_play_pause_button"
+			using = "JominiButton"
+			size = { 30 30 }
+			position = { 35 0 }
+			text = "[MusicPlayback.GetPlaybackStatusFrameIndex]"
+			tooltip = "[MusicPlayback.GetCurrentTrackName]"
+			onclick = "[MusicPlayback.TogglePlayPauseTrack]"
+			
+		}
+
+		button = {
+			name = "music_next_button"
+			using = "JominiButton"
+			size = { 30 30 }
+			position = { 70 0 }
+			text = ">>"
+			tooltip = "MUSIC_PLAYER_NEXT_TRACK"
+			onclick = "[MusicPlayback.NextTrack]"
+			
+		}
+	}
+}
